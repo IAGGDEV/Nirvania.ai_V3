@@ -1,0 +1,109 @@
+═══════════════════════════════════════════════════════════════
+🚀 DESPLEGAR NIRVANIA EN VERCEL - 5 MINUTOS
+═══════════════════════════════════════════════════════════════
+
+⚠️ TU DOMINIO nirvaniaai.com NO SE TOCARÁ ⚠️
+
+═══════════════════════════════════════════════════════════════
+
+PASO 1: CREAR REPO EN GITHUB
+═══════════════════════════════════════════════════════════════
+
+1. Ve a: https://github.com/new
+
+2. Nombre del repo: nirvania-crm
+
+3. Privacidad: PRIVADO
+
+4. Click "Create repository"
+
+5. COPIA la URL que te da (algo como):
+   https://github.com/TU-USUARIO/nirvania-crm.git
+
+
+═══════════════════════════════════════════════════════════════
+
+PASO 2: SUBIR CÓDIGO A GITHUB
+═══════════════════════════════════════════════════════════════
+
+Abre PowerShell y ejecuta (reemplaza TU-USUARIO):
+
+cd C:\Users\IAGG2\OneDrive\Nirvania.ai\Nirvania.ai_V3\nirvania
+
+git remote add origin https://github.com/TU-USUARIO/nirvania-crm.git
+
+git branch -M main
+
+git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════
+
+PASO 3: DESPLEGAR EN VERCEL
+═══════════════════════════════════════════════════════════════
+
+1. Ve a: https://vercel.com/new
+
+2. Click "Import Git Repository"
+
+3. Encuentra tu repo: nirvania-crm
+
+4. Click "Import"
+
+5. Framework: Next.js (auto-detectado)
+
+6. Root Directory: ./
+
+7. NO CAMBIES NADA MÁS
+
+8. Click "Deploy"
+
+9. Espera 2-3 minutos...
+
+
+═══════════════════════════════════════════════════════════════
+
+PASO 4: ¡LISTO!
+═══════════════════════════════════════════════════════════════
+
+Vercel te dará una URL:
+
+https://nirvania-crm.vercel.app
+
+O algo similar como:
+
+https://nirvania-crm-tu-usuario.vercel.app
+
+
+🎉 ABRE ESA URL Y VERÁS TU CRM FUNCIONANDO 🎉
+
+
+═══════════════════════════════════════════════════════════════
+
+NOTA IMPORTANTE:
+═══════════════════════════════════════════════════════════════
+
+- Tu dominio nirvaniaai.com NO se toca
+- Funciona con datos DEMO (mock)
+- Todas las funciones están activas
+- Sidebar, Contactos, Agentes, Forms TODO funciona
+
+Para conectar Supabase y Claude después:
+- Vercel Dashboard → Settings → Environment Variables
+- Agregar las keys reales
+
+
+═══════════════════════════════════════════════════════════════
+
+¿NECESITAS AYUDA?
+═══════════════════════════════════════════════════════════════
+
+Si algo falla, mándame screenshot y lo arreglamos.
+
+Los errores comunes:
+1. Build error → Yo lo arreglo
+2. No puedes push a GitHub → Verificar permisos
+3. Vercel no encuentra el repo → Dar permisos a Vercel en GitHub
+
+
+═══════════════════════════════════════════════════════════════

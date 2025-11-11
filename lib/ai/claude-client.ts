@@ -1,4 +1,5 @@
 import { ChatAnthropic } from '@langchain/anthropic'
+import { config } from '@/lib/config'
 
 /**
  * Cliente de Claude API configurado para Nirvania
@@ -8,7 +9,7 @@ export function createClaudeClient(temperature = 0.7) {
   return new ChatAnthropic({
     modelName: 'claude-sonnet-4-20250514',
     temperature,
-    apiKey: process.env.ANTHROPIC_API_KEY,
+    apiKey: config.anthropic.apiKey,
     maxTokens: 4096,
   })
 }
@@ -20,7 +21,7 @@ export function createClaudeClientExtended() {
   return new ChatAnthropic({
     modelName: 'claude-sonnet-4-20250514',
     temperature: 0.5,
-    apiKey: process.env.ANTHROPIC_API_KEY,
+    apiKey: config.anthropic.apiKey,
     maxTokens: 8192,
   })
 }
