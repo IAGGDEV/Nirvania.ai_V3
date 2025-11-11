@@ -1,4 +1,4 @@
-import { TOOL_DESCRIPTIONS } from './tools'
+import { TOOL_DESCRIPTIONS } from './tools/index'
 
 /**
  * SLASH COMMANDS SYSTEM

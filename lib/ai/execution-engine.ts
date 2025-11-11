@@ -2,7 +2,7 @@ import { ChatAnthropic } from '@langchain/anthropic'
 import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'
 import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { createClaudeClient } from './claude-client'
-import { getToolsForSkill, ToolName } from './tools'
+import { getToolsForSkill, ToolName } from './tools/index'
 import type { Skill, SkillRun } from '@/lib/types/agents'
 
 /**
