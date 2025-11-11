@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvania CRM - Motor de IA en Acción</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar-item-active {
+            background-color: #e6f0ff;
+            color: #0066ff;
+            border-left: 4px solid #0066ff;
+        }
+        .tab-active {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .log-line {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        #test-result { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-40 h-screen w-[280px] bg-white border-r border-gray-200">
+        <div class="flex h-full flex-col">
+            <div class="flex h-16 items-center justify-between px-6 border-b">
+                <h1 class="text-2xl font-bold text-[#0066ff]">Nirvania</h1>
+            </div>
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <span>🏠</span><span>Inicio</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <span>👤</span><span>Contactos</span>
+                </a>
+                <a href="#" class="sidebar-item-active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+                    <span>🤖</span><span>Agentes</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="pl-[280px] pb-32">
+        <main class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="mb-6">
+                    <button class="mb-4 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-2">
+                        ← Volver a Agentes
+                    </button>
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Seguimiento a Leads Inactivos</h1>
+                            <p class="mt-1 text-sm text-gray-500">Última edición: hace poco • Creado: hace poco por ti</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">Activo</span>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                ▶ Probar Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="mb-6">
+                    <div class="flex gap-1 bg-gray-100 p-1 rounded-lg inline-flex">
+                        <button class="px-4 py-2 rounded-md text-sm font-medium text-gray-600">Overview</button>
+                        <button class="tab-active px-4 py-2 rounded-md text-sm font-medium">Crear</button>
+                        <button class="px-4 py-2 rounded-md text-sm font-medium text-gray-600">Configuración</button>
+                    </div>
+                </div>
+
+                <!-- Test Panel -->
+                <div class="max-w-4xl space-y-6">
+                    <div class="rounded-lg border-2 border-blue-200 bg-blue-50 p-6">
+                        <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
+                            🧪 Probar Skill
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Ejecuta este skill en <strong>modo de prueba</strong>. No enviará emails, mensajes, ni modificará registros. 
+                            Es una forma segura de probar antes de activarlo.
+                        </p>
+                        <label class="text-sm font-medium">Input de prueba <span class="text-red-500">*</span></label>
+                        <textarea id="test-input" class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg bg-white" rows="4" placeholder="Ej: Busca todos los leads de México que no han respondido en 3 días">Busca todos los leads de México que no han respondido en 3 días y envíales un email de seguimiento personalizado</textarea>
+                        <button onclick="executeTest()" id="test-btn" class="mt-4 w-full px-4 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc] flex items-center justify-center gap-2">
+                            <span>▶</span> Probar Skill
+                        </button>
+                    </div>
+
+                    <!-- Result Panel (Hidden by default) -->
+                    <div id="test-result" class="rounded-lg border-2 border-green-200 bg-green-50 p-6">
+                        <div class="flex items-start gap-3 mb-4">
+                            <svg class="h-6 w-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-base text-green-900 mb-1">✅ Ejecución Exitosa (Modo Test)</h4>
+                                <p class="text-sm text-green-700">Duración: 2.34s</p>
+                            </div>
+                        </div>
+
+                        <!-- Output -->
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-900 mb-2">📤 Resultado:</p>
+                            <div class="bg-white rounded-lg p-4 border border-green-300">
+                                <div class="text-sm space-y-2 text-gray-900">
+                                    <p><strong>🔍 Búsqueda completada:</strong></p>
+                                    <p>→ Encontré <strong>5 leads</strong> de México que no han respondido en 3+ días</p>
+                                    <br>
+                                    <p><strong>📧 Emails preparados (MODO TEST - NO ENVIADOS):</strong></p>
+                                    <p>1. <strong>María García</strong> (Tech Solutions MX)</p>
+                                    <p class="ml-4 text-gray-600">✉️ Subject: "María, seguimiento sobre Nirvania CRM"</p>
+                                    <p class="ml-4 text-gray-600">📝 Email personalizado basado en conversación del 5 de Nov</p>
+                                    <br>
+                                    <p>2. <strong>Carlos Méndez</strong> (Startup Digital)</p>
+                                    <p class="ml-4 text-gray-600">✉️ Subject: "Carlos, ¿seguimos con la implementación?"</p>
+                                    <p class="ml-4 text-gray-600">📝 Menciona su interés en automatización de ventas</p>
+                                    <br>
+                                    <p>3-5. [3 contactos adicionales procesados]</p>
+                                    <br>
+                                    <p><strong>✅ Resumen:</strong></p>
+                                    <p>→ 5 contactos analizados</p>
+                                    <p>→ 5 emails personalizados creados</p>
+                                    <p>→ 5 actividades registradas</p>
+                                    <p>→ <span class="text-red-600 font-semibold">⚠️ SIMULACIÓN - Ningún email fue enviado realmente</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tools Used -->
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-900 mb-2">🛠️ Herramientas utilizadas:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-mono border border-green-300 text-gray-800">search_contacts</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-mono border border-green-300 text-gray-800">get_contact_details</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-mono border border-green-300 text-gray-800">send_email</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-mono border border-green-300 text-gray-800">log_activity</span>
+                            </div>
+                        </div>
+
+                        <!-- Logs Toggle -->
+                        <button onclick="toggleLogs()" class="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 mb-2">
+                            <svg id="chevron-logs" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            Ver logs detallados (12)
+                        </button>
+
+                        <!-- Logs Content -->
+                        <div id="logs-content" style="display:none;">
+                            <div class="bg-gray-900 rounded-lg p-4 max-h-96 overflow-y-auto">
+                                <div class="space-y-1 font-mono text-xs">
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:45</span>
+                                        <span class="text-green-400 font-semibold">[INFO]</span>
+                                        <span>Iniciando ejecución de skill</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:45</span>
+                                        <span class="text-green-400 font-semibold">[INFO]</span>
+                                        <span>Prompt del sistema construido</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:45</span>
+                                        <span class="text-green-400 font-semibold">[INFO]</span>
+                                        <span>8 herramientas cargadas</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:46</span>
+                                        <span class="text-green-400 font-semibold">[INFO]</span>
+                                        <span>Ejecutando agente con LangChain</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:46</span>
+                                        <span class="text-blue-400 font-semibold">[INFO]</span>
+                                        <span>Herramienta ejecutada: search_contacts</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-400 ml-12 text-xs">
+                                        <span>→ Input: {query: null, country: "MX", lastContactedDaysAgo: 3}</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-400 ml-12 text-xs">
+                                        <span>→ Output: {success: true, count: 5}</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:47</span>
+                                        <span class="text-blue-400 font-semibold">[INFO]</span>
+                                        <span>Herramienta ejecutada: get_contact_details (x5)</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:47</span>
+                                        <span class="text-yellow-400 font-semibold">[WARN]</span>
+                                        <span>Modo test activado - Emails NO serán enviados</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:48</span>
+                                        <span class="text-blue-400 font-semibold">[INFO]</span>
+                                        <span>Herramienta ejecutada: send_email (x5)</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-400 ml-12 text-xs">
+                                        <span>→ Email 1: maria.garcia@techsolutions.mx ✅ SIMULADO</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-400 ml-12 text-xs">
+                                        <span>→ Email 2: carlos@startupdigital.com ✅ SIMULADO</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:48</span>
+                                        <span class="text-blue-400 font-semibold">[INFO]</span>
+                                        <span>Herramienta ejecutada: log_activity (x5)</span>
+                                    </div>
+                                    <div class="log-line flex gap-3 text-gray-300">
+                                        <span class="text-gray-500">10:23:48</span>
+                                        <span class="text-green-400 font-semibold">[INFO]</span>
+                                        <span>✅ Ejecución completada exitosamente</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructions Section -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="p-6 border-b border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Instrucciones del Skill</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Configuración actual que está siendo ejecutada</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-300 font-mono text-sm">
+                                <div class="space-y-2 text-gray-800">
+                                    <p><strong>OBJETIVO:</strong></p>
+                                    <p class="ml-4 text-gray-700">Hacer seguimiento automático a leads que no han respondido en 3 días</p>
+                                    <br>
+                                    <p><strong>INSTRUCCIONES:</strong></p>
+                                    <p class="ml-4 text-blue-600">1. <span class="bg-blue-100 px-2 py-0.5 rounded">/buscar_contactos</span> lastContactedDaysAgo:3 country:MX</p>
+                                    <p class="ml-4 text-gray-700">2. Para cada contacto:</p>
+                                    <p class="ml-8 text-blue-600">- <span class="bg-blue-100 px-2 py-0.5 rounded">/detalles_contacto</span> contactId:{id}</p>
+                                    <p class="ml-8 text-gray-700">- Analizar última conversación</p>
+                                    <p class="ml-8 text-gray-700">- Crear mensaje personalizado</p>
+                                    <p class="ml-4 text-blue-600">3. <span class="bg-blue-100 px-2 py-0.5 rounded">/enviar_email</span> to:{email} subject:"Seguimiento" body:{mensaje}</p>
+                                    <p class="ml-4 text-blue-600">4. <span class="bg-blue-100 px-2 py-0.5 rounded">/registrar_actividad</span> type:"email" contactId:{id}</p>
+                                    <br>
+                                    <p><strong>RESTRICCIONES:</strong></p>
+                                    <p class="ml-4 text-red-600">- Nunca enviar después de las 7pm</p>
+                                    <p class="ml-4 text-red-600">- No contactar fines de semana</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Commands Reference -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <span>⚡</span> Comandos Disponibles
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Contacts -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 mb-2">📇 Contactos</h4>
+                                <div class="space-y-2 text-xs">
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-blue-600">/buscar_contactos</code>
+                                        <p class="text-gray-600 mt-1">Buscar en la BD</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-blue-600">/detalles_contacto</code>
+                                        <p class="text-gray-600 mt-1">Info completa</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-blue-600">/actualizar_contacto</code>
+                                        <p class="text-gray-600 mt-1">Modificar datos</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Communication -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 mb-2">💬 Comunicación</h4>
+                                <div class="space-y-2 text-xs">
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-green-600">/enviar_email</code>
+                                        <p class="text-gray-600 mt-1">Enviar emails</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-green-600">/agendar_reunion</code>
+                                        <p class="text-gray-600 mt-1">Programar meetings</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deals -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 mb-2">💼 Tratos</h4>
+                                <div class="space-y-2 text-xs">
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-purple-600">/crear_deal</code>
+                                        <p class="text-gray-600 mt-1">Nuevo trato</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-purple-600">/actualizar_etapa_deal</code>
+                                        <p class="text-gray-600 mt-1">Mover en pipeline</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tasks -->
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 mb-2">📋 Tareas</h4>
+                                <div class="space-y-2 text-xs">
+                                    <div class="bg-gray-50 p-2 rounded border border-gray-200">
+                                        <code class="text-orange-600">/registrar_actividad</code>
+                                        <p class="text-gray-600 mt-1">Log en timeline</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Architecture Diagram -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4">🏗️ Arquitectura del Motor de IA</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-300">
+                            <pre class="text-xs text-gray-800 leading-relaxed">
+┌─────────────────────────────────────────────────┐
+│           USUARIO CREA SKILL                    │
+│  "Seguimiento a leads no respondidos"          │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────┐
+│      SKILL EXECUTION ENGINE                     │
+│  • Valida configuración                         │
+│  • Construye prompt dinámico                    │
+│  • Modo test/producción                         │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────┐
+│         LANGCHAIN AGENT                         │
+│  • Claude Sonnet 4                              │
+│  • Razonamiento paso a paso                     │
+│  • Decide qué herramientas usar                 │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────┐
+│         TOOLS REGISTRY (8 tools)                │
+│  ┌─────────────────────────────────────┐        │
+│  │ search_contacts                      │        │
+│  │ get_contact_details                  │        │
+│  │ update_contact                       │        │
+│  │ send_email ⚠️ (test mode)           │        │
+│  │ schedule_meeting                     │        │
+│  │ create_deal                          │        │
+│  │ update_deal_stage                    │        │
+│  │ log_activity                         │        │
+│  └─────────────────────────────────────┘        │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────┐
+│         SUPABASE (CRM Database)                 │
+│  • Contacts, Companies, Deals                   │
+│  • Activities Log                               │
+│  • Skill Runs History                           │
+└─────────────────────────────────────────────────┘
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chat Bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-50">
+        <div class="mx-auto max-w-3xl px-4 pb-4 pt-2">
+            <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/90 shadow-lg border border-gray-200/50 px-5 py-3">
+                <span>💬</span>
+                <input type="text" placeholder="Buscar o preguntar cualquier cosa..." class="flex-1 bg-transparent outline-none">
+                <button class="rounded-lg p-1.5 bg-[#0066ff] text-white">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function executeTest() {
+            const btn = document.getElementById('test-btn');
+            const result = document.getElementById('test-result');
+            
+            // Show loading state
+            btn.innerHTML = '<svg class="h-5 w-5 spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Ejecutando skill...';
+            btn.disabled = true;
+
+            // Simulate execution
+            setTimeout(() => {
+                btn.innerHTML = '▶ Probar Skill';
+                btn.disabled = false;
+                result.style.display = 'block';
+                result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 2000);
+        }
+
+        function toggleLogs() {
+            const logs = document.getElementById('logs-content');
+            const chevron = document.getElementById('chevron-logs');
+            
+            if (logs.style.display === 'none') {
+                logs.style.display = 'block';
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                logs.style.display = 'none';
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>

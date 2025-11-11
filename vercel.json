@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "regions": ["gru1"],
+  "functions": {
+    "app/api/contacts/route.ts": {
+      "maxDuration": 10
+    },
+    "app/api/contacts/[id]/route.ts": {
+      "maxDuration": 10
+    }
+  }
+}

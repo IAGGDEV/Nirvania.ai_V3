@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvania CRM - Agentes Completo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar-item-active {
+            background-color: #e6f0ff;
+            color: #0066ff;
+            border-left: 4px solid #0066ff;
+        }
+        .tab-active {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .collapsible-content.open {
+            max-height: 2000px;
+        }
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+        .chevron.rotated {
+            transform: rotate(180deg);
+        }
+        #page-agents { display: block; }
+        #page-skill-detail { display: none; }
+        #page-skill-new { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-40 h-screen w-[280px] bg-white border-r border-gray-200">
+        <div class="flex h-full flex-col">
+            <div class="flex h-16 items-center justify-between px-6 border-b">
+                <h1 class="text-2xl font-bold text-[#0066ff]">Nirvania</h1>
+            </div>
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <span>🏠</span><span>Inicio</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <span>👤</span><span>Contactos</span>
+                </a>
+                <a href="#" class="sidebar-item-active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+                    <span>🤖</span><span>Agentes</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="pl-[280px] pb-32">
+        <!-- PAGE: AGENTS LIST -->
+        <main id="page-agents" class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Agentes</h1>
+                        <p class="mt-2 text-sm text-gray-500">0 Skills activos</p>
+                    </div>
+                    <button onclick="showPage('page-skill-new')" class="px-6 py-3 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc] flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Crear Skill
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-12 gap-4 px-4 py-2 text-sm font-medium text-gray-500">
+                    <div class="col-span-3">Agentes</div>
+                    <div class="col-span-3">Skills</div>
+                    <div class="col-span-2 text-center">Completados</div>
+                    <div class="col-span-2 text-center">En progreso</div>
+                    <div class="col-span-1 text-center">Estado</div>
+                    <div class="col-span-1 text-right">Acciones</div>
+                </div>
+
+                <div class="space-y-6 mt-4">
+                    <!-- Account Manager con ejemplo de skill -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">🤝</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">Account Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Drives your pipeline and grows existing accounts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="grid grid-cols-12 gap-4 px-4 py-4 hover:bg-gray-50 cursor-pointer" onclick="showPage('page-skill-detail')">
+                                <div class="col-span-3 flex items-center">
+                                    <span class="text-sm font-medium text-gray-900">Seguimiento a Leads</span>
+                                </div>
+                                <div class="col-span-3 flex items-center">
+                                    <span class="text-sm text-gray-600">@followUpLeads</span>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">12</span>
+                                </div>
+                                <div class="col-span-2 flex items-center justify-center">
+                                    <span class="text-sm text-gray-900">3</span>
+                                </div>
+                                <div class="col-span-1 flex items-center justify-center">
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Activo</span>
+                                </div>
+                                <div class="col-span-1 flex items-center justify-end">
+                                    <button class="px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-1">
+                                        ✏️ Editar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Outbound Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">📤</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">Outbound Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Proactively finds and engages new prospects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button onclick="showPage('page-skill-new')" class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Inbound Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">📥</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">Inbound Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Handles inbound inquiries from potential customers</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button onclick="showPage('page-skill-new')" class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- System Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">⚙️</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">System Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Handles system tasks like imports, data syncing, and more</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button onclick="showPage('page-skill-new')" class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-[#0066ff] mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-blue-900 mb-1">¿Cómo funcionan los agentes?</h3>
+                            <p class="text-sm text-blue-800">
+                                Los agentes son asistentes IA que automatizan tareas específicas en tu CRM. 
+                                Cada agente tiene habilidades configurables que puedes personalizar con instrucciones en lenguaje natural. 
+                                Una vez activados, trabajarán 24/7 siguiendo tus reglas y objetivos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- PAGE: SKILL DETAIL -->
+        <main id="page-skill-detail" class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-6">
+                    <button onclick="showPage('page-agents')" class="mb-4 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-2">
+                        ← Volver
+                    </button>
+
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Seguimiento a Leads</h1>
+                            <p class="mt-1 text-sm text-gray-500">Última edición: hace poco • Creado: hace poco por ti</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">Activo</span>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                ▶ Probar Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="mb-6">
+                    <div class="flex gap-1 bg-gray-100 p-1 rounded-lg inline-flex">
+                        <button onclick="switchTab('overview')" id="tab-overview" class="tab-active px-4 py-2 rounded-md text-sm font-medium">Overview</button>
+                        <button onclick="switchTab('create')" id="tab-create" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">Crear</button>
+                        <button onclick="switchTab('settings')" id="tab-settings" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900">Configuración</button>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT: OVERVIEW -->
+                <div id="content-overview" class="space-y-8">
+                    <div class="grid grid-cols-5 gap-4">
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 text-center">
+                            <div class="text-3xl font-bold text-gray-900">12</div>
+                            <div class="mt-2 text-sm text-gray-500">Total Runs</div>
+                        </div>
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 text-center">
+                            <div class="text-3xl font-bold text-blue-600">3</div>
+                            <div class="mt-2 text-sm text-gray-500">En progreso</div>
+                        </div>
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 text-center">
+                            <div class="text-3xl font-bold text-green-600">8</div>
+                            <div class="mt-2 text-sm text-gray-500">Exitosos</div>
+                        </div>
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 text-center">
+                            <div class="text-3xl font-bold text-yellow-600">1</div>
+                            <div class="mt-2 text-sm text-gray-500">Finalizados</div>
+                        </div>
+                        <div class="rounded-lg border border-gray-200 bg-white p-6 text-center">
+                            <div class="text-3xl font-bold text-red-600">0</div>
+                            <div class="mt-2 text-sm text-gray-500">Errores</div>
+                        </div>
+                    </div>
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4">Ejecuciones de Skill</h3>
+                        <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
+                            📊 Gráfica de ejecuciones (Recharts)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT: CREATE -->
+                <div id="content-create" class="space-y-6 max-w-4xl" style="display:none;">
+                    <!-- Test Panel -->
+                    <div class="rounded-lg border-2 border-blue-200 bg-blue-50 p-6">
+                        <h3 class="text-lg font-semibold mb-2">Probar Skill</h3>
+                        <p class="text-sm text-gray-600 mb-4">Ejecuta en modo prueba sin afectar datos reales</p>
+                        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white" rows="4" placeholder="Ingresa texto para probar..."></textarea>
+                        <button class="mt-4 w-full px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">▶ Probar Skill</button>
+                    </div>
+
+                    <!-- Collapsible: Goal -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <button onclick="toggleCollapsible('goal')" class="flex w-full items-center justify-between p-6 hover:bg-gray-50">
+                            <div class="text-left">
+                                <h3 class="text-lg font-semibold">Objetivo</h3>
+                                <p class="text-sm text-gray-500 mt-1">Define el objetivo general del skill</p>
+                            </div>
+                            <svg id="chevron-goal" class="h-5 w-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="content-goal" class="collapsible-content open border-t border-gray-200">
+                            <div class="p-6">
+                                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg" rows="3" placeholder="Hacer seguimiento a todos los leads que no han respondido...">Hacer seguimiento automático a leads que no han respondido en 3 días y re-engagement personalizado</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible: Instructions -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <button onclick="toggleCollapsible('instructions')" class="flex w-full items-center justify-between p-6 hover:bg-gray-50">
+                            <div class="text-left">
+                                <h3 class="text-lg font-semibold">Instrucciones</h3>
+                                <p class="text-sm text-gray-500 mt-1">Paso a paso detallado de qué hacer</p>
+                            </div>
+                            <svg id="chevron-instructions" class="h-5 w-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="content-instructions" class="collapsible-content open border-t border-gray-200">
+                            <div class="p-6">
+                                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg font-mono text-sm" rows="10">1. Buscar en la base de datos todos los contactos que:
+   - Fueron contactados hace más de 3 días
+   - No han respondido
+   - Status = "Lead"
+
+2. Para cada contacto:
+   - Verificar historial de interacciones
+   - Crear mensaje personalizado basado en el último contacto
+   - Mencionar puntos específicos de la conversación anterior
+
+3. Enviar email de seguimiento con:
+   - Subject line personalizado
+   - Referencia a conversación previa
+   - Call to action claro
+   - Link a calendario para agendar reunión
+
+4. Registrar la actividad en el CRM
+5. Programar siguiente seguimiento en 5 días si no responde</textarea>
+                                <p class="mt-2 text-xs text-gray-500">💡 Escribe / para agregar acciones</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible: Restrictions -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <button onclick="toggleCollapsible('restrictions')" class="flex w-full items-center justify-between p-6 hover:bg-gray-50">
+                            <div class="text-left">
+                                <h3 class="text-lg font-semibold">Restricciones <span class="text-sm font-normal text-gray-500">opcional</span></h3>
+                                <p class="text-sm text-gray-500 mt-1">Define qué nunca debe hacerse</p>
+                            </div>
+                            <svg id="chevron-restrictions" class="h-5 w-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="content-restrictions" class="collapsible-content border-t border-gray-200">
+                            <div class="p-6">
+                                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg" rows="4" placeholder="Ej: Nunca enviar emails los fines de semana...">- Nunca enviar emails después de las 7pm o en fines de semana
+- No contactar si el lead pidió no ser contactado
+- No modificar deals que ya están cerrados
+- Respetar horarios de zona horaria del contacto</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible: Memory -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <button onclick="toggleCollapsible('memory')" class="flex w-full items-center justify-between p-6 hover:bg-gray-50">
+                            <div class="text-left">
+                                <h3 class="text-lg font-semibold">Memoria <span class="text-sm font-normal text-gray-500">opcional</span></h3>
+                                <p class="text-sm text-gray-500 mt-1">Contexto importante a recordar</p>
+                            </div>
+                            <svg id="chevron-memory" class="h-5 w-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="content-memory" class="collapsible-content border-t border-gray-200">
+                            <div class="p-6">
+                                <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg" rows="4" placeholder="Ej: El horario de atención es 9am-6pm...">- Nuestro producto principal es Nirvania CRM para LATAM
+- Precio estándar: desde $99 USD/mes
+- Horario de atención: Lunes a Viernes 9am-6pm (hora de México)
+- Link de calendario: https://calendly.com/nirvania/demo
+- Firma de email incluye datos de contacto y redes sociales</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible: Manual Approval -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <button onclick="toggleCollapsible('approval')" class="flex w-full items-center justify-between p-6 hover:bg-gray-50">
+                            <div class="text-left">
+                                <h3 class="text-lg font-semibold">Aprobación Manual <span class="text-sm font-normal text-gray-500">opcional</span></h3>
+                                <p class="text-sm text-gray-500 mt-1">Revisar antes de ejecutar</p>
+                            </div>
+                            <svg id="chevron-approval" class="h-5 w-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="content-approval" class="collapsible-content border-t border-gray-200">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-700">Requiere aprobación manual</span>
+                                        <p class="text-xs text-gray-500 mt-1">Recibirás notificación antes de cada acción</p>
+                                    </div>
+                                    <button onclick="toggleSwitch(this)" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200">
+                                        <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition translate-x-0"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Descartar</button>
+                        <button class="px-6 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc]">Guardar Cambios</button>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT: SETTINGS -->
+                <div id="content-settings" class="space-y-8 max-w-2xl" style="display:none;">
+                    <div>
+                        <label class="text-sm font-medium text-gray-700">Descripción del Skill</label>
+                        <textarea class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg" rows="3">Hace seguimiento automático a leads inactivos</textarea>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-700">Handle</label>
+                        <div class="relative mt-2">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#0066ff] font-medium">@</span>
+                            <input type="text" value="followUpLeads" class="w-full pl-8 px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-700">Agente Asignado</label>
+                        <select class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg bg-white">
+                            <option selected>🤝 Account Manager</option>
+                            <option>📤 Outbound Manager</option>
+                            <option>📥 Inbound Manager</option>
+                            <option>⚙️ System Manager</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end">
+                        <button class="px-6 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc]">Guardar Configuración</button>
+                    </div>
+                    <div class="rounded-lg border-2 border-red-200 bg-red-50 p-6">
+                        <h3 class="text-lg font-semibold text-red-900 mb-2">Zona Peligrosa</h3>
+                        <p class="text-sm text-red-700 mb-4">Una vez eliminado, no hay vuelta atrás</p>
+                        <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2">
+                            🗑️ Eliminar Skill
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- PAGE: NEW SKILL -->
+        <main id="page-skill-new" class="min-h-screen p-8">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8">
+                    <button onclick="showPage('page-agents')" class="mb-4 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-2">
+                        ← Volver
+                    </button>
+                    <h1 class="text-3xl font-bold text-gray-900">Crear Nuevo Skill</h1>
+                    <p class="mt-2 text-gray-600">Define un nuevo skill para automatizar tareas</p>
+                </div>
+
+                <div class="rounded-lg border border-gray-200 bg-white p-8 space-y-6">
+                    <div>
+                        <label class="text-sm font-medium">Nombre del Skill <span class="text-red-500">*</span></label>
+                        <input type="text" placeholder="Ej: Seguimiento a Leads Inactivos" class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg" value="Mi Nuevo Skill">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Handle <span class="text-red-500">*</span></label>
+                        <div class="relative mt-2">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#0066ff] font-medium">@</span>
+                            <input type="text" placeholder="miSkillHandle" class="w-full pl-8 px-4 py-2 border border-gray-300 rounded-lg" value="minuevoskill">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Agente Asignado <span class="text-red-500">*</span></label>
+                        <select class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg bg-white">
+                            <option>🤝 Account Manager</option>
+                            <option>📤 Outbound Manager</option>
+                            <option>📥 Inbound Manager</option>
+                            <option>⚙️ System Manager</option>
+                        </select>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex gap-3">
+                            <span class="text-xl">ℹ️</span>
+                            <div>
+                                <h4 class="text-sm font-semibold text-blue-900 mb-1">Próximos pasos</h4>
+                                <p class="text-sm text-blue-800">Después de crear el skill, podrás configurar sus instrucciones, objetivos y disparadores.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button onclick="showPage('page-agents')" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
+                        <button onclick="createAndViewSkill()" class="px-6 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc]">Crear Skill</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chat Bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-50">
+        <div class="mx-auto max-w-3xl px-4 pb-4 pt-2">
+            <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/90 shadow-lg border border-gray-200/50 px-5 py-3">
+                <span>💬</span>
+                <input type="text" placeholder="Buscar o preguntar cualquier cosa..." class="flex-1 bg-transparent outline-none">
+                <button class="rounded-lg p-1.5 bg-[#0066ff] text-white">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.getElementById('page-agents').style.display = 'none';
+            document.getElementById('page-skill-detail').style.display = 'none';
+            document.getElementById('page-skill-new').style.display = 'none';
+            document.getElementById(pageId).style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-gray-600');
+            });
+            document.getElementById('tab-' + tabName).classList.add('tab-active');
+            document.getElementById('tab-' + tabName).classList.remove('text-gray-600');
+
+            // Update content
+            document.getElementById('content-overview').style.display = 'none';
+            document.getElementById('content-create').style.display = 'none';
+            document.getElementById('content-settings').style.display = 'none';
+            document.getElementById('content-' + tabName).style.display = 'block';
+        }
+
+        function toggleCollapsible(id) {
+            const content = document.getElementById('content-' + id);
+            const chevron = document.getElementById('chevron-' + id);
+            
+            content.classList.toggle('open');
+            chevron.classList.toggle('rotated');
+        }
+
+        function toggleSwitch(btn) {
+            const span = btn.querySelector('span');
+            if (btn.classList.contains('bg-gray-200')) {
+                btn.classList.remove('bg-gray-200');
+                btn.classList.add('bg-[#0066ff]');
+                span.classList.remove('translate-x-0');
+                span.classList.add('translate-x-5');
+            } else {
+                btn.classList.add('bg-gray-200');
+                btn.classList.remove('bg-[#0066ff]');
+                span.classList.add('translate-x-0');
+                span.classList.remove('translate-x-5');
+            }
+        }
+
+        function createAndViewSkill() {
+            alert('✅ Skill creado correctamente!');
+            showPage('page-skill-detail');
+        }
+
+        // Open first collapsibles by default
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('content-goal').classList.add('open');
+            document.getElementById('content-instructions').classList.add('open');
+        });
+    </script>
+</body>
+</html>

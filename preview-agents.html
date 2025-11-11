@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvania CRM - Agentes IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar-item-active {
+            background-color: #e6f0ff;
+            color: #0066ff;
+            border-left: 4px solid #0066ff;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-40 h-screen w-[280px] bg-white border-r border-gray-200">
+        <div class="flex h-full flex-col">
+            <!-- Logo -->
+            <div class="flex h-16 items-center justify-between px-6 border-b">
+                <h1 class="text-2xl font-bold text-[#0066ff]">Nirvania</h1>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span>Inicio</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span>Contactos</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <span>Empresas</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Tratos</span>
+                </a>
+                <a href="#" class="sidebar-item-active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Agentes</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="pl-[280px] pb-32">
+        <main class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Agentes</h1>
+                        <p class="mt-2 text-sm text-gray-500">0 Skills activos</p>
+                    </div>
+                    <button class="px-6 py-3 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc] flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Crear Skill
+                    </button>
+                </div>
+
+                <!-- Table Header -->
+                <div class="grid grid-cols-12 gap-4 px-4 py-2 text-sm font-medium text-gray-500">
+                    <div class="col-span-3">Agentes</div>
+                    <div class="col-span-3">Skills</div>
+                    <div class="col-span-2 text-center">Completados</div>
+                    <div class="col-span-2 text-center">En progreso</div>
+                    <div class="col-span-1 text-center">Estado</div>
+                    <div class="col-span-1 text-right">Acciones</div>
+                </div>
+
+                <!-- Agent Workers -->
+                <div class="space-y-6 mt-4">
+                    <!-- Account Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">🤝</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">Account Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Drives your pipeline and grows existing accounts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Outbound Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">📤</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">Outbound Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Proactively finds and engages new prospects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Inbound Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">📥</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">Inbound Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Handles inbound inquiries from potential customers</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- System Manager -->
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="border-b border-gray-100 p-4">
+                            <div class="flex items-start gap-4">
+                                <div class="text-4xl">⚙️</div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">System Manager</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Handles system tasks like imports, data syncing, and more</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <p class="text-sm text-gray-500">No hay skills configurados para este agente</p>
+                            <button class="mt-4 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2 mx-auto">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Crear Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="mt-8 bg-blue-50 rounded-lg p-6 border border-blue-200">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-[#0066ff] mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-blue-900 mb-1">¿Cómo funcionan los agentes?</h3>
+                            <p class="text-sm text-blue-800">
+                                Los agentes son asistentes IA que automatizan tareas específicas en tu CRM. 
+                                Cada agente tiene habilidades configurables que puedes personalizar con instrucciones en lenguaje natural. 
+                                Una vez activados, trabajarán 24/7 siguiendo tus reglas y objetivos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example with Skills (uncomment to see with data) -->
+                <!-- 
+                <div class="rounded-lg border border-gray-200 bg-white mt-6">
+                    <div class="border-b border-gray-100 p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">🤝</div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900">Account Manager</h3>
+                                <p class="mt-1 text-sm text-gray-500">Drives your pipeline and grows existing accounts</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="grid grid-cols-12 gap-4 px-4 py-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="col-span-3 flex items-center">
+                                <span class="text-sm font-medium text-gray-900">Follow-up con clientes</span>
+                            </div>
+                            <div class="col-span-3 flex items-center">
+                                <span class="text-sm text-gray-600">@followUpSkill</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">12</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">3</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Activo</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-end">
+                                <button class="px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                    Editar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Chat Bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-50">
+        <div class="mx-auto max-w-3xl px-4 pb-4 pt-2">
+            <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/90 shadow-lg border border-gray-200/50 px-5 py-3">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                </svg>
+                <input type="text" placeholder="Buscar o preguntar cualquier cosa..." class="flex-1 bg-transparent outline-none">
+                <button class="rounded-lg p-1.5 bg-[#0066ff] text-white">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvania CRM - Form Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        .sidebar-item-active {
+            background-color: #e6f0ff;
+            color: #0066ff;
+            border-left: 4px solid #0066ff;
+        }
+        .tab-active {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .dragging {
+            opacity: 0.5;
+        }
+        .field-item {
+            cursor: move;
+        }
+        #page-forms-list { display: block; }
+        #page-form-builder { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-40 h-screen w-[280px] bg-white border-r border-gray-200">
+        <div class="flex h-full flex-col">
+            <div class="flex h-16 items-center px-6 border-b">
+                <h1 class="text-2xl font-bold text-[#0066ff]">Nirvania</h1>
+            </div>
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
+                    <span>👤</span><span>Contactos</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
+                    <span>🤖</span><span>Agentes</span>
+                </a>
+                <a href="#" class="sidebar-item-active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium">
+                    <span>📝</span><span>Formularios</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="pl-[280px] pb-32">
+        <!-- PAGE: FORMS LIST -->
+        <main id="page-forms-list" class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Formularios</h1>
+                        <p class="mt-2 text-sm text-gray-500">2 Formularios activos</p>
+                    </div>
+                    <button onclick="showPage('page-form-builder')" class="px-6 py-3 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc] flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Crear Formulario
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-lg border p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Formularios activos</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">2</p>
+                            </div>
+                            <div class="p-3 bg-blue-50 rounded-lg">
+                                <span class="text-2xl">📝</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Total envíos</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">47</p>
+                            </div>
+                            <div class="p-3 bg-green-50 rounded-lg">
+                                <span class="text-2xl">✉️</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Tasa de conversión</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">68%</p>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-lg">
+                                <span class="text-2xl">📊</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forms Table -->
+                <div class="rounded-lg border border-gray-200 bg-white">
+                    <div class="grid grid-cols-12 gap-4 border-b bg-gray-50 px-6 py-3 text-sm font-medium text-gray-500">
+                        <div class="col-span-4">Formulario</div>
+                        <div class="col-span-2 text-center">Vistas</div>
+                        <div class="col-span-2 text-center">Envíos</div>
+                        <div class="col-span-1 text-center">% Completo</div>
+                        <div class="col-span-2">Última edición</div>
+                        <div class="col-span-1 text-center">Estado</div>
+                    </div>
+                    <div class="divide-y">
+                        <!-- Form 1 -->
+                        <div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer" onclick="showPage('page-form-builder')">
+                            <div class="col-span-4">
+                                <h3 class="font-medium text-gray-900">Formulario de Contacto</h3>
+                                <p class="text-sm text-gray-500">Captura de leads general</p>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">124</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">42</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">68%</span>
+                            </div>
+                            <div class="col-span-2 flex items-center">
+                                <span class="text-sm text-gray-600">hace 2 horas</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Publicado</span>
+                            </div>
+                        </div>
+                        <!-- Form 2 -->
+                        <div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="col-span-4">
+                                <h3 class="font-medium text-gray-900">Solicitud de Demo</h3>
+                                <p class="text-sm text-gray-500">Para agendar demostraciones</p>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">89</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">5</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="text-sm text-gray-900">5.6%</span>
+                            </div>
+                            <div class="col-span-2 flex items-center">
+                                <span class="text-sm text-gray-600">hace 1 día</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Publicado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- PAGE: FORM BUILDER -->
+        <main id="page-form-builder" class="min-h-screen p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="mb-6 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <button onclick="showPage('page-forms-list')" class="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-2">
+                            ← Volver
+                        </button>
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Formulario de Contacto</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="previewForm()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                            👁️ Vista Previa
+                        </button>
+                        <button onclick="saveForm()" class="px-4 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc] text-sm flex items-center gap-2">
+                            💾 Guardar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="mb-6">
+                    <div class="flex gap-1 bg-gray-100 p-1 rounded-lg inline-flex">
+                        <button onclick="switchFormTab('builder')" id="form-tab-builder" class="tab-active px-4 py-2 rounded-md text-sm font-medium">Constructor</button>
+                        <button onclick="switchFormTab('settings')" id="form-tab-settings" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600">Configuración</button>
+                        <button onclick="switchFormTab('publish')" id="form-tab-publish" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600">Publicar</button>
+                        <button onclick="switchFormTab('submissions')" id="form-tab-submissions" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600">Envíos (42)</button>
+                    </div>
+                </div>
+
+                <!-- TAB: BUILDER -->
+                <div id="form-content-builder" class="grid grid-cols-12 gap-6">
+                    <!-- Left: Field Types -->
+                    <div class="col-span-3">
+                        <div class="rounded-lg border border-gray-200 bg-white">
+                            <div class="p-4 border-b">
+                                <h3 class="font-semibold text-sm">Tipos de Campo</h3>
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <button onclick="addField('text')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>📝</span> Texto Corto
+                                </button>
+                                <button onclick="addField('textarea')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>📄</span> Texto Largo
+                                </button>
+                                <button onclick="addField('email')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>📧</span> Email
+                                </button>
+                                <button onclick="addField('phone')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>📱</span> Teléfono
+                                </button>
+                                <button onclick="addField('select')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>📋</span> Dropdown
+                                </button>
+                                <button onclick="addField('radio')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>◉</span> Opción Múltiple
+                                </button>
+                                <button onclick="addField('checkbox')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>☑️</span> Checkbox
+                                </button>
+                                <button onclick="addField('date')" class="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-left text-sm flex items-center gap-2">
+                                    <span>📅</span> Fecha
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Form Canvas -->
+                    <div class="col-span-6">
+                        <div class="rounded-lg border border-gray-200 bg-white">
+                            <div class="p-4 border-b">
+                                <h3 class="font-semibold text-sm">Vista Previa del Formulario</h3>
+                            </div>
+                            <div class="p-6">
+                                <div id="form-canvas" class="space-y-4 min-h-[400px]">
+                                    <!-- Field: Name -->
+                                    <div class="field-item rounded-lg border border-gray-200 p-4 bg-gray-50">
+                                        <div class="flex items-start gap-3">
+                                            <span class="cursor-move mt-1">⋮⋮</span>
+                                            <div class="flex-1">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <label class="font-medium text-gray-900">Nombre completo <span class="text-red-500">*</span></label>
+                                                    <div class="flex gap-1">
+                                                        <button onclick="editField(1)" class="p-1 hover:bg-gray-200 rounded">⚙️</button>
+                                                        <button onclick="deleteField(1)" class="p-1 hover:bg-gray-200 rounded">🗑️</button>
+                                                    </div>
+                                                </div>
+                                                <input type="text" placeholder="Tu nombre" class="w-full px-3 py-2 border border-gray-300 rounded-lg" disabled>
+                                                <p class="text-xs text-gray-500 mt-1">Mapeado a: Contact Name</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Field: Email -->
+                                    <div class="field-item rounded-lg border border-gray-200 p-4 bg-gray-50">
+                                        <div class="flex items-start gap-3">
+                                            <span class="cursor-move mt-1">⋮⋮</span>
+                                            <div class="flex-1">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <label class="font-medium text-gray-900">Email <span class="text-red-500">*</span></label>
+                                                    <div class="flex gap-1">
+                                                        <button onclick="editField(2)" class="p-1 hover:bg-gray-200 rounded">⚙️</button>
+                                                        <button onclick="deleteField(2)" class="p-1 hover:bg-gray-200 rounded">🗑️</button>
+                                                    </div>
+                                                </div>
+                                                <input type="email" placeholder="tu@email.com" class="w-full px-3 py-2 border border-gray-300 rounded-lg" disabled>
+                                                <p class="text-xs text-gray-500 mt-1">Mapeado a: Contact Email</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Field: Company -->
+                                    <div class="field-item rounded-lg border border-gray-200 p-4 bg-gray-50">
+                                        <div class="flex items-start gap-3">
+                                            <span class="cursor-move mt-1">⋮⋮</span>
+                                            <div class="flex-1">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <label class="font-medium text-gray-900">Empresa</label>
+                                                    <div class="flex gap-1">
+                                                        <button onclick="editField(3)" class="p-1 hover:bg-gray-200 rounded">⚙️</button>
+                                                        <button onclick="deleteField(3)" class="p-1 hover:bg-gray-200 rounded">🗑️</button>
+                                                    </div>
+                                                </div>
+                                                <input type="text" placeholder="Nombre de tu empresa" class="w-full px-3 py-2 border border-gray-300 rounded-lg" disabled>
+                                                <p class="text-xs text-gray-500 mt-1">Mapeado a: Company</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add Field Button -->
+                                    <button class="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-[#0066ff] hover:bg-blue-50 transition-colors text-sm text-gray-600 hover:text-[#0066ff]">
+                                        + Arrastra un campo desde la izquierda o haz click para agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Field Settings -->
+                    <div class="col-span-3">
+                        <div class="rounded-lg border border-gray-200 bg-white sticky top-4">
+                            <div class="p-4 border-b">
+                                <h3 class="font-semibold text-sm">Configuración del Campo</h3>
+                            </div>
+                            <div id="field-settings" class="p-4 space-y-4">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Etiqueta</label>
+                                    <input type="text" value="Nombre completo" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Placeholder</label>
+                                    <input type="text" value="Tu nombre" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <label class="text-sm font-medium text-gray-700">Requerido</label>
+                                    <button onclick="toggleSwitch(this)" class="relative inline-flex h-6 w-11 items-center rounded-full bg-[#0066ff]">
+                                        <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition translate-x-5"></span>
+                                    </button>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-700">Mapear a campo CRM</label>
+                                    <select class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg bg-white">
+                                        <option>No mapear</option>
+                                        <option selected>Contact Name</option>
+                                        <option>Contact Email</option>
+                                        <option>Contact Phone</option>
+                                        <option>Company</option>
+                                        <option>Job Title</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: SETTINGS -->
+                <div id="form-content-settings" class="max-w-3xl space-y-6" style="display:none;">
+                    <!-- Basic Info -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+                        <h3 class="text-lg font-semibold">Información del Formulario</h3>
+                        <div>
+                            <label class="text-sm font-medium">Título del Formulario</label>
+                            <input type="text" value="Formulario de Contacto" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium">Descripción</label>
+                            <textarea rows="3" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">Ponte en contacto con nosotros</textarea>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium">Logo</label>
+                            <button class="mt-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                📤 Subir Logo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+                        <h3 class="text-lg font-semibold">Botón de Envío</h3>
+                        <div>
+                            <label class="text-sm font-medium">Texto del Botón</label>
+                            <input type="text" value="Enviar" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+
+                    <!-- After Submission -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+                        <h3 class="text-lg font-semibold">Después del Envío</h3>
+                        <div>
+                            <label class="text-sm font-medium">Mensaje de Éxito</label>
+                            <textarea rows="3" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">¡Gracias por tu mensaje! Te contactaremos pronto.</textarea>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium">URL de Redirección (opcional)</label>
+                            <input type="url" placeholder="https://tusitio.com/gracias" class="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+
+                    <!-- Colors -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+                        <h3 class="text-lg font-semibold">Personalización</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-sm font-medium">Color Primario</label>
+                                <div class="mt-2 flex gap-2">
+                                    <input type="color" value="#0066ff" class="h-10 w-20 rounded border">
+                                    <input type="text" value="#0066FF" class="flex-1 px-3 py-2 border rounded-lg">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium">Color Fondo</label>
+                                <div class="mt-2 flex gap-2">
+                                    <input type="color" value="#ffffff" class="h-10 w-20 rounded border">
+                                    <input type="text" value="#FFFFFF" class="flex-1 px-3 py-2 border rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Automation -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+                        <h3 class="text-lg font-semibold">Automatización</h3>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-sm font-medium">Auto-crear Contacto</label>
+                                <p class="text-xs text-gray-500">Crea automáticamente un contacto por cada envío</p>
+                            </div>
+                            <button onclick="toggleSwitch(this)" class="relative inline-flex h-6 w-11 items-center rounded-full bg-[#0066ff]">
+                                <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition translate-x-5"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-sm font-medium">Notificación por Email</label>
+                                <p class="text-xs text-gray-500">Recibe un email con cada envío</p>
+                            </div>
+                            <button onclick="toggleSwitch(this)" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200">
+                                <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition translate-x-0"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: PUBLISH -->
+                <div id="form-content-publish" class="max-w-3xl space-y-6" style="display:none;">
+                    <!-- Status -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold">Estado del Formulario</h3>
+                                <p class="text-sm text-gray-500">Controla si tu formulario está en vivo</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">Publicado</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="px-4 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc]">Publicar</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Pausar</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Despublicar</button>
+                        </div>
+                    </div>
+
+                    <!-- Public URL -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4">URL Pública</h3>
+                        <p class="text-sm text-gray-500 mb-4">Comparte este link para recopilar respuestas</p>
+                        <div class="flex gap-2">
+                            <input type="text" value="https://nirvaniaai.com/f/abc123xyz" readonly class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm">
+                            <button onclick="copyToClipboard('https://nirvaniaai.com/f/abc123xyz')" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                📋 Copiar
+                            </button>
+                            <button onclick="window.open('https://nirvaniaai.com/f/abc123xyz')" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                🔗 Abrir
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Embed Code -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4">Embed en tu Sitio Web</h3>
+                        <p class="text-sm text-gray-500 mb-4">Copia y pega este código en tu web</p>
+                        <div class="relative">
+                            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto"><code>&lt;iframe
+  src="https://nirvaniaai.com/f/abc123xyz"
+  width="100%"
+  height="600"
+  frameborder="0"
+&gt;&lt;/iframe&gt;</code></pre>
+                            <button onclick="copyToClipboard('iframe code')" class="absolute right-2 top-2 px-3 py-1 bg-gray-700 text-white rounded text-xs hover:bg-gray-600">
+                                Copiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Share Options -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4">Opciones de Compartir</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                📧 Compartir por Email
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                💬 Compartir por WhatsApp
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                🐦 Compartir en Twitter
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm flex items-center gap-2">
+                                💼 Compartir en LinkedIn
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- QR Code -->
+                    <div class="rounded-lg border border-gray-200 bg-white p-6">
+                        <h3 class="text-lg font-semibold mb-4">Código QR</h3>
+                        <p class="text-sm text-gray-500 mb-4">Descarga el código QR para compartir offline</p>
+                        <div class="flex items-center gap-4">
+                            <div class="h-32 w-32 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
+                                <svg class="h-24 w-24 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                    <rect x="2" y="2" width="8" height="8" rx="1"/>
+                                    <rect x="14" y="2" width="8" height="8" rx="1"/>
+                                    <rect x="2" y="14" width="8" height="8" rx="1"/>
+                                    <rect x="14" y="14" width="2" height="2"/>
+                                    <rect x="18" y="14" width="2" height="2"/>
+                                    <rect x="14" y="18" width="2" height="2"/>
+                                    <rect x="18" y="18" width="2" height="2"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <button class="px-4 py-2 bg-[#0066ff] text-white rounded-lg hover:bg-[#0052cc]">Generar QR Code</button>
+                                <p class="text-xs text-gray-500 mt-2">Perfecto para materiales impresos y eventos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: SUBMISSIONS -->
+                <div id="form-content-submissions" class="max-w-5xl space-y-6" style="display:none;">
+                    <div class="flex justify-end">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+                            📥 Exportar a CSV
+                        </button>
+                    </div>
+                    <div class="rounded-lg border border-gray-200 bg-white">
+                        <div class="divide-y">
+                            <!-- Submission 1 -->
+                            <div class="flex items-center justify-between p-4 hover:bg-gray-50 cursor-pointer" onclick="viewSubmission(1)">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">María García • Tech Solutions MX</p>
+                                    <p class="text-xs text-gray-500">maria.garcia@empresa.mx • hace 2 horas</p>
+                                </div>
+                                <button class="px-3 py-1.5 border border-gray-300 rounded text-sm hover:bg-gray-50">👁️ Ver</button>
+                            </div>
+                            <!-- Submission 2 -->
+                            <div class="flex items-center justify-between p-4 hover:bg-gray-50 cursor-pointer">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Carlos Rodríguez • Startup BR</p>
+                                    <p class="text-xs text-gray-500">carlos@startup.br • hace 5 horas</p>
+                                </div>
+                                <button class="px-3 py-1.5 border border-gray-300 rounded text-sm hover:bg-gray-50">👁️ Ver</button>
+                            </div>
+                            <!-- Submission 3 -->
+                            <div class="flex items-center justify-between p-4 hover:bg-gray-50 cursor-pointer">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Ana Martínez • FinTech CO</p>
+                                    <p class="text-xs text-gray-500">ana@fintech.co • ayer</p>
+                                </div>
+                                <button class="px-3 py-1.5 border border-gray-300 rounded text-sm hover:bg-gray-50">👁️ Ver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chat Bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-50">
+        <div class="mx-auto max-w-3xl px-4 pb-4 pt-2">
+            <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/90 shadow-lg border border-gray-200/50 px-5 py-3">
+                <span>💬</span>
+                <input type="text" placeholder="Buscar o preguntar cualquier cosa..." class="flex-1 bg-transparent outline-none">
+                <button class="rounded-lg p-1.5 bg-[#0066ff] text-white">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.getElementById('page-forms-list').style.display = 'none';
+            document.getElementById('page-form-builder').style.display = 'none';
+            document.getElementById(pageId).style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function switchFormTab(tabName) {
+            ['builder', 'settings', 'publish', 'submissions'].forEach(tab => {
+                document.getElementById('form-tab-' + tab).classList.remove('tab-active');
+                document.getElementById('form-tab-' + tab).classList.add('text-gray-600');
+                document.getElementById('form-content-' + tab).style.display = 'none';
+            });
+            document.getElementById('form-tab-' + tabName).classList.add('tab-active');
+            document.getElementById('form-tab-' + tabName).classList.remove('text-gray-600');
+            document.getElementById('form-content-' + tabName).style.display = 'block';
+        }
+
+        function addField(type) {
+            alert('➕ Campo "' + type + '" agregado al formulario');
+        }
+
+        function editField(id) {
+            alert('⚙️ Editando campo #' + id);
+        }
+
+        function deleteField(id) {
+            if (confirm('¿Eliminar este campo?')) {
+                alert('🗑️ Campo eliminado');
+            }
+        }
+
+        function toggleSwitch(btn) {
+            const span = btn.querySelector('span');
+            if (btn.classList.contains('bg-gray-200')) {
+                btn.classList.remove('bg-gray-200');
+                btn.classList.add('bg-[#0066ff]');
+                span.classList.remove('translate-x-0');
+                span.classList.add('translate-x-5');
+            } else {
+                btn.classList.add('bg-gray-200');
+                btn.classList.remove('bg-[#0066ff]');
+                span.classList.add('translate-x-0');
+                span.classList.remove('translate-x-5');
+            }
+        }
+
+        function saveForm() {
+            alert('✅ Formulario guardado correctamente');
+        }
+
+        function previewForm() {
+            window.open('about:blank', '_blank');
+            alert('🔍 Abriendo vista previa en nueva pestaña...');
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('📋 Copiado al portapapeles');
+        }
+
+        function viewSubmission(id) {
+            alert('👁️ Viendo detalles del envío #' + id);
+        }
+
+        // Initialize Sortable for drag & drop
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('form-canvas');
+            if (canvas) {
+                new Sortable(canvas, {
+                    animation: 150,
+                    handle: '.cursor-move',
+                    ghostClass: 'dragging'
+                });
+            }
+        });
+    </script>
+</body>
+</html>
