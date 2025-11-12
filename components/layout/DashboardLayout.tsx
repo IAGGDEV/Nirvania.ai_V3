@@ -2,7 +2,6 @@
 
 import { Sidebar } from './Sidebar'
 import { ChatBar } from './ChatBar'
-import { cn } from '@/lib/utils'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -10,16 +9,12 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20">
       {/* Sidebar */}
       <Sidebar />
       
       {/* Main content */}
-      <div className={cn(
-        "transition-all duration-300",
-        "pl-[280px]", // Ajustar cuando sidebar esté colapsado
-        "pb-32" // Espacio para el chat bar
-      )}>
+      <div className="pl-[72px] pb-24">
         <main className="min-h-screen">
           {children}
         </main>
@@ -30,4 +25,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
+
+
+
 

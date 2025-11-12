@@ -5,3 +5,7 @@ export default function HomePage() {
   redirect('/contacts')
 }
 
+
+
+
+

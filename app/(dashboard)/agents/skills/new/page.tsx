@@ -195,3 +195,7 @@ export default function NewSkillPage() {
     </div>
   )
 }
+
+
+
+

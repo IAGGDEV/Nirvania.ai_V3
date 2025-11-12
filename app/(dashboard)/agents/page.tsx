@@ -1,14 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Plus, Edit, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { useEffect } from 'react'
+import { Plus, Edit2, MoreHorizontal } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAgentsStore } from '@/lib/stores/agents-mock'
 import { cn } from '@/lib/utils'
@@ -24,189 +17,169 @@ export default function AgentsPage() {
 
   const activeSkillsCount = skills.filter(s => s.status === 'active').length
 
-  if (loading && agents.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
-      </div>
-    )
-  }
-
   return (
-    <div className="p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Agentes</h1>
-            <p className="mt-2 text-sm text-gray-500">
-              {activeSkillsCount} Skills activos
-            </p>
+    <div className="min-h-screen">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="px-12 py-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900">Agents</h1>
+              <p className="mt-1 text-sm text-gray-500">{activeSkillsCount} Active Skills Total</p>
+            </div>
+            <button
+              onClick={() => router.push('/agents/skills/new')}
+              className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              <Plus size={18} strokeWidth={2.5} />
+              Create New Skill
+            </button>
           </div>
-          <Button 
-            size="lg"
-            onClick={() => router.push('/agents/skills/new')}
-            className="bg-primary-600 hover:bg-primary-700"
-          >
-            <Plus className="mr-2 h-5 w-5" />
-            Crear Skill
-          </Button>
         </div>
+      </div>
 
-        {/* Table Header */}
-        <div className="grid grid-cols-12 gap-4 px-4 py-2 text-sm font-medium text-gray-500">
-          <div className="col-span-3">Agentes</div>
-          <div className="col-span-3">Skills</div>
-          <div className="col-span-2 text-center">Completados</div>
-          <div className="col-span-2 text-center">En progreso</div>
-          <div className="col-span-1 text-center">Estado</div>
-          <div className="col-span-1 text-right">Acciones</div>
-        </div>
+      {/* Table */}
+      <div className="px-12 py-8">
+        <div className="bg-white rounded-lg border border-gray-200">
+          {/* Table Header */}
+          <div className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+            <div className="col-span-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Agents
+            </div>
+            <div className="col-span-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Skills
+            </div>
+            <div className="col-span-2 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+              Completed
+            </div>
+            <div className="col-span-2 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+              Running
+            </div>
+            <div className="col-span-1 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+              Status
+            </div>
+            <div className="col-span-1 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">
+              Actions
+            </div>
+          </div>
 
-        {/* Agent Rows */}
-        <div className="space-y-6 mt-4">
-          {agents.map((agent) => {
-            const agentSkills = skills.filter(s => s.agentId === agent.id)
-            
-            return (
-              <div key={agent.id} className="rounded-lg border border-gray-200 bg-white">
-                {/* Agent Header */}
-                <div className="border-b border-gray-100 p-4">
-                  <div className="flex items-start gap-4">
-                    <div className="text-4xl">{agent.icon}</div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {agent.name}
-                      </h3>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {agent.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Skills for this Agent */}
-                <div className="divide-y divide-gray-100">
-                  {agentSkills.length === 0 ? (
-                    <div className="p-8 text-center">
-                      <p className="text-sm text-gray-500">
-                        No hay skills configurados para este agente
-                      </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mt-4"
-                        onClick={() => router.push(`/agents/skills/new?agent=${agent.id}`)}
-                      >
-                        <Plus className="mr-2 h-4 w-4" />
-                        Crear Skill
-                      </Button>
-                    </div>
-                  ) : (
-                    agentSkills.map((skill) => (
-                      <div
-                        key={skill.id}
-                        className="grid grid-cols-12 gap-4 px-4 py-4 hover:bg-gray-50 cursor-pointer"
-                        onClick={() => router.push(`/agents/skills/${skill.id}`)}
-                      >
-                        <div className="col-span-3 flex items-center">
-                          <span className="text-sm font-medium text-gray-900">
-                            {skill.name}
-                          </span>
-                        </div>
-                        <div className="col-span-3 flex items-center">
-                          <span className="text-sm text-gray-600">
-                            {skill.handle}
-                          </span>
-                        </div>
-                        <div className="col-span-2 flex items-center justify-center">
-                          <span className="text-sm text-gray-900">
-                            {skill.succeeded}
-                          </span>
-                        </div>
-                        <div className="col-span-2 flex items-center justify-center">
-                          <span className="text-sm text-gray-900">
-                            {skill.inProgress}
-                          </span>
-                        </div>
-                        <div className="col-span-1 flex items-center justify-center">
-                          <span
-                            className={cn(
-                              "px-2 py-1 rounded-full text-xs font-medium",
-                              skill.status === 'active' && 'bg-green-100 text-green-700',
-                              skill.status === 'inactive' && 'bg-gray-100 text-gray-700',
-                              skill.status === 'paused' && 'bg-yellow-100 text-yellow-700'
-                            )}
-                          >
-                            {skill.status === 'active' ? 'Activo' : skill.status === 'paused' ? 'Pausado' : 'Inactivo'}
-                          </span>
-                        </div>
-                        <div className="col-span-1 flex items-center justify-end">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                              >
-                                <Edit className="mr-2 h-4 w-4" />
-                                Editar
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  router.push(`/agents/skills/${skill.id}`)
-                                }}
-                              >
-                                Editar Skill
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  // TODO: Duplicate skill
-                                }}
-                              >
-                                Duplicar
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-red-600"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  // TODO: Delete skill
-                                }}
-                              >
-                                Eliminar
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+          {/* Table Body */}
+          {loading && agents.length === 0 ? (
+            <div className="px-6 py-16 text-center">
+              <div className="inline-block w-8 h-8 border-3 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {agents.map((agent) => {
+                const agentSkills = skills.filter(s => s.agentId === agent.id)
+                
+                return (
+                  <div key={agent.id}>
+                    {/* Agent Row */}
+                    <div className="px-6 py-5 bg-gray-50/30">
+                      <div className="flex items-center gap-3">
+                        <div className="text-3xl">{agent.icon}</div>
+                        <div>
+                          <h3 className="text-base font-semibold text-gray-900">
+                            {agent.name}
+                          </h3>
+                          <p className="mt-0.5 text-sm text-gray-500">
+                            {agent.description}
+                          </p>
                         </div>
                       </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+                    </div>
 
-        {/* Info Section */}
-        <div className="mt-8 bg-primary-50 rounded-lg p-6">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-primary-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+                    {/* Skills Rows */}
+                    {agentSkills.length === 0 ? (
+                      <div className="px-6 py-12 text-center">
+                        <p className="text-sm text-gray-500 mb-4">
+                          No skills yet
+                        </p>
+                        <button
+                          onClick={() => router.push(`/agents/skills/new?agent=${agent.id}`)}
+                          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                          <Plus size={16} />
+                          Add Skill
+                        </button>
+                      </div>
+                    ) : (
+                      agentSkills.map((skill, index) => (
+                        <div
+                          key={skill.id}
+                          className={cn(
+                            "grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50/50 cursor-pointer transition-colors group",
+                            index === agentSkills.length - 1 && "border-b-0"
+                          )}
+                          onClick={() => router.push(`/agents/skills/${skill.id}`)}
+                        >
+                          {/* Agent Name (Empty for skills, shown on agent row) */}
+                          <div className="col-span-3" />
+                          
+                          {/* Skill Name */}
+                          <div className="col-span-3 flex items-center">
+                            <span className="text-sm font-medium text-gray-900">
+                              {skill.name}
+                            </span>
+                          </div>
+                          
+                          {/* Completed */}
+                          <div className="col-span-2 flex items-center justify-center">
+                            <span className="text-sm text-gray-700">
+                              {skill.succeeded}
+                            </span>
+                          </div>
+                          
+                          {/* Running */}
+                          <div className="col-span-2 flex items-center justify-center">
+                            <span className="text-sm text-gray-700">
+                              {skill.inProgress}
+                            </span>
+                          </div>
+                          
+                          {/* Status */}
+                          <div className="col-span-1 flex items-center justify-center">
+                            <span
+                              className={cn(
+                                "text-xs font-medium",
+                                skill.status === 'active' && 'text-green-700',
+                                skill.status === 'inactive' && 'text-gray-500',
+                                skill.status === 'paused' && 'text-orange-600'
+                              )}
+                            >
+                              {skill.status}
+                            </span>
+                          </div>
+                          
+                          {/* Actions */}
+                          <div className="col-span-1 flex items-center justify-end gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                router.push(`/agents/skills/${skill.id}`)
+                              }}
+                              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                              title="Edit"
+                            >
+                              <Edit2 size={16} />
+                            </button>
+                            <button
+                              onClick={(e) => e.stopPropagation()}
+                              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                              title="More"
+                            >
+                              <MoreHorizontal size={16} />
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )
+              })}
             </div>
-            <div>
-              <h3 className="text-sm font-semibold text-primary-900 mb-1">¿Cómo funcionan los agentes?</h3>
-              <p className="text-sm text-primary-800">
-                Los agentes son asistentes IA que automatizan tareas específicas en tu CRM. 
-                Cada agente tiene habilidades configurables que puedes personalizar con instrucciones en lenguaje natural. 
-                Una vez activados, trabajarán 24/7 siguiendo tus reglas y objetivos.
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -134,3 +134,7 @@ export const PHONE_PATTERNS = {
   SV: /^\+503\d{8}$/,     // +503 76543210
   NI: /^\+505\d{8}$/      // +505 87654321
 } as const
+
+
+
+

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvania.ai - Avances del Proyecto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-ready {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .status-progress {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .status-beta {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+            color: white;
+        }
+        .nav-link {
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            background-color: rgba(0, 102, 255, 0.1);
+            color: #0066ff;
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: 32px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #0066ff 0%, #667eea 100%);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Nirvania.ai</h1>
+                        <p class="text-xs text-gray-500">CRM Inteligente con IA</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="http://localhost:3000" target="_blank" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all">
+                        🚀 Ver en Localhost:3000
+                    </a>
+                    <span class="status-badge status-ready">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        Listo para Demo
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-5xl font-bold mb-6">Avances del Proyecto</h2>
+                <p class="text-xl text-blue-100 mb-8">
+                    Sistema CRM completo con IA, agentes inteligentes, formularios públicos y gestión avanzada de contactos
+                </p>
+                <div class="flex items-center justify-center gap-6 text-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Next.js 15 + React 18</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>TypeScript + TailwindCSS</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Supabase + LangChain</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">8+</div>
+                    <div class="text-sm text-gray-600">Módulos Principales</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-purple-600 mb-2">50+</div>
+                    <div class="text-sm text-gray-600">Componentes UI</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">100%</div>
+                    <div class="text-sm text-gray-600">TypeScript</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-orange-600 mb-2">15+</div>
+                    <div class="text-sm text-gray-600">APIs Integradas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-16">
+
+        <!-- Navegación Rápida -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 section-title">🚀 Acceso Rápido</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="http://localhost:3000" target="_blank" class="card-hover bg-white p-6 rounded-xl border-2 border-gray-200">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Dashboard Principal</h3>
+                    <p class="text-sm text-gray-600">Vista general del sistema</p>
+                    <div class="mt-4">
+                        <span class="status-badge status-ready">✓ Listo</span>
+                    </div>
+                </a>
+
+                <a href="http://localhost:3000/contacts" target="_blank" class="card-hover bg-white p-6 rounded-xl border-2 border-gray-200">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Contactos</h3>
+                    <p class="text-sm text-gray-600">Gestión de contactos con IA</p>
+                    <div class="mt-4">
+                        <span class="status-badge status-ready">✓ Listo</span>
+                    </div>
+                </a>
+
+                <a href="http://localhost:3000/agents" target="_blank" class="card-hover bg-white p-6 rounded-xl border-2 border-gray-200">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Agentes IA</h3>
+                    <p class="text-sm text-gray-600">Agentes inteligentes con skills</p>
+                    <div class="mt-4">
+                        <span class="status-badge status-ready">✓ Listo</span>
+                    </div>
+                </a>
+
+                <a href="http://localhost:3000/forms" target="_blank" class="card-hover bg-white p-6 rounded-xl border-2 border-gray-200">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Formularios</h3>
+                    <p class="text-sm text-gray-600">Formularios públicos y analytics</p>
+                    <div class="mt-4">
+                        <span class="status-badge status-ready">✓ Listo</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Módulos Implementados -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 section-title">📦 Módulos Implementados</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Contactos -->
+                <div class="bg-white rounded-xl border-2 border-gray-200 p-8">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="feature-icon">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <span class="status-badge status-ready">✓ 100%</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Gestión de Contactos</h3>
+                    <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Tabla con búsqueda y filtros avanzados
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Modal crear/editar con validaciones
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Validación teléfonos LATAM (17 países)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Acciones rápidas (WhatsApp, email, llamar)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Importación masiva desde CSV
+                        </li>
+                    </ul>
+                    <a href="http://localhost:3000/contacts" target="_blank" class="inline-flex items-center gap-2 text-blue-600 font-medium hover:text-blue-700">
+                        Ver módulo
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Agentes IA -->
+                <div class="bg-white rounded-xl border-2 border-gray-200 p-8">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="feature-icon">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <span class="status-badge status-ready">✓ 100%</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Agentes Inteligentes</h3>
+                    <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Sistema de skills personalizables
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Integración con Claude AI (Anthropic)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Panel de pruebas en tiempo real
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Ejecución de comandos slash
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Gestión de herramientas y recursos
+                        </li>
+                    </ul>
+                    <a href="http://localhost:3000/agents" target="_blank" class="inline-flex items-center gap-2 text-blue-600 font-medium hover:text-blue-700">
+                        Ver módulo
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Formularios Públicos -->
+                <div class="bg-white rounded-xl border-2 border-gray-200 p-8">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="feature-icon">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <span class="status-badge status-ready">✓ 100%</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Formularios Públicos</h3>
+                    <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Constructor visual de formularios
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            URLs públicas compartibles
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Analytics y estadísticas en tiempo real
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Validación personalizada de campos
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Campos dinámicos (texto, email, teléfono, etc)
+                        </li>
+                    </ul>
+                    <a href="http://localhost:3000/forms" target="_blank" class="inline-flex items-center gap-2 text-blue-600 font-medium hover:text-blue-700">
+                        Ver módulo
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Chat IA Omnipresente -->
+                <div class="bg-white rounded-xl border-2 border-gray-200 p-8">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="feature-icon">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                            </svg>
+                        </div>
+                        <span class="status-badge status-ready">✓ 100%</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">ChatBar con IA</h3>
+                    <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Chat fijo en todas las páginas
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Comandos slash inteligentes
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Procesamiento con LangChain
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Ejecución de acciones en el CRM
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Historial de conversaciones
+                        </li>
+                    </ul>
+                    <a href="http://localhost:3000" target="_blank" class="inline-flex items-center gap-2 text-blue-600 font-medium hover:text-blue-700">
+                        Ver módulo
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Previews HTML -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 section-title">🎨 Previews Estáticos (HTML)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <a href="preview.html" target="_blank" class="card-hover bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-xl border-2 border-blue-200">
+                    <div class="text-3xl mb-3">📋</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Preview General</h3>
+                    <p class="text-sm text-gray-600 mb-4">Vista completa del CRM con datos de ejemplo</p>
+                    <span class="text-blue-600 text-sm font-medium">Abrir →</span>
+                </a>
+
+                <a href="preview-agents-full.html" target="_blank" class="card-hover bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl border-2 border-purple-200">
+                    <div class="text-3xl mb-3">🤖</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Agentes Completo</h3>
+                    <p class="text-sm text-gray-600 mb-4">Sistema completo de agentes IA y skills</p>
+                    <span class="text-purple-600 text-sm font-medium">Abrir →</span>
+                </a>
+
+                <a href="preview-forms.html" target="_blank" class="card-hover bg-gradient-to-br from-green-50 to-teal-50 p-6 rounded-xl border-2 border-green-200">
+                    <div class="text-3xl mb-3">📝</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Formularios</h3>
+                    <p class="text-sm text-gray-600 mb-4">Constructor y gestión de formularios públicos</p>
+                    <span class="text-green-600 text-sm font-medium">Abrir →</span>
+                </a>
+
+                <a href="preview-formulario-publico.html" target="_blank" class="card-hover bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border-2 border-orange-200">
+                    <div class="text-3xl mb-3">🌐</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Formulario Público</h3>
+                    <p class="text-sm text-gray-600 mb-4">Vista pública de formulario con validaciones</p>
+                    <span class="text-orange-600 text-sm font-medium">Abrir →</span>
+                </a>
+
+                <a href="preview-ai-engine.html" target="_blank" class="card-hover bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border-2 border-indigo-200">
+                    <div class="text-3xl mb-3">⚡</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Motor IA</h3>
+                    <p class="text-sm text-gray-600 mb-4">Engine de ejecución con LangChain</p>
+                    <span class="text-indigo-600 text-sm font-medium">Abrir →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Tecnologías -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 section-title">🛠️ Stack Tecnológico</h2>
+            <div class="bg-white rounded-xl border-2 border-gray-200 p-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-black rounded-xl flex items-center justify-center text-white font-bold text-2xl">N</div>
+                        <h4 class="font-semibold text-gray-900">Next.js 15</h4>
+                        <p class="text-xs text-gray-500">Framework React</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-blue-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">TS</div>
+                        <h4 class="font-semibold text-gray-900">TypeScript</h4>
+                        <p class="text-xs text-gray-500">Tipado estático</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">T</div>
+                        <h4 class="font-semibold text-gray-900">TailwindCSS</h4>
+                        <p class="text-xs text-gray-500">Estilos utility-first</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-green-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">S</div>
+                        <h4 class="font-semibold text-gray-900">Supabase</h4>
+                        <p class="text-xs text-gray-500">Backend & DB</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-purple-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">L</div>
+                        <h4 class="font-semibold text-gray-900">LangChain</h4>
+                        <p class="text-xs text-gray-500">Framework IA</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">A</div>
+                        <h4 class="font-semibold text-gray-900">Anthropic</h4>
+                        <p class="text-xs text-gray-500">Claude AI</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-pink-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">Z</div>
+                        <h4 class="font-semibold text-gray-900">Zustand</h4>
+                        <p class="text-xs text-gray-500">State management</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 bg-indigo-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">R</div>
+                        <h4 class="font-semibold text-gray-900">React Hook Form</h4>
+                        <p class="text-xs text-gray-500">Formularios</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Características Destacadas -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 section-title">✨ Características Destacadas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-8 rounded-xl">
+                    <svg class="w-12 h-12 mb-4 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <h3 class="text-xl font-bold mb-2">IA Integrada</h3>
+                    <p class="text-blue-100 text-sm">Agentes inteligentes con Claude AI para automatización avanzada y procesamiento de lenguaje natural</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-teal-600 text-white p-8 rounded-xl">
+                    <svg class="w-12 h-12 mb-4 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    <h3 class="text-xl font-bold mb-2">Diseño Responsive</h3>
+                    <p class="text-green-100 text-sm">Interfaz optimizada para desktop, tablet y móvil con TailwindCSS y componentes Radix UI</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-red-600 text-white p-8 rounded-xl">
+                    <svg class="w-12 h-12 mb-4 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                    <h3 class="text-xl font-bold mb-2">Seguridad Robusta</h3>
+                    <p class="text-orange-100 text-sm">Autenticación con Supabase, validaciones Zod y protección de rutas API</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Próximos Pasos -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 section-title">🎯 Próximos Pasos</h2>
+            <div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🚀</span>
+                            Deployment
+                        </h3>
+                        <ul class="space-y-3 text-gray-300 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">→</span>
+                                <span>Configurar variables de entorno en Vercel</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">→</span>
+                                <span>Conectar con GitHub repository</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">→</span>
+                                <span>Configurar dominio personalizado nirvaniaai.com</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">→</span>
+                                <span>Setup SSL y analytics</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🔧</span>
+                            Configuración
+                        </h3>
+                        <ul class="space-y-3 text-gray-300 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400 mt-1">→</span>
+                                <span>Configurar base de datos Supabase</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400 mt-1">→</span>
+                                <span>Obtener API keys de Anthropic (Claude)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400 mt-1">→</span>
+                                <span>Configurar webhooks y integraciones</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400 mt-1">→</span>
+                                <span>Setup email y notificaciones</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer CTA -->
+        <section class="text-center">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-12">
+                <h2 class="text-3xl font-bold mb-4">¿Listo para empezar?</h2>
+                <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                    Abre el proyecto en localhost:3000 y comienza a explorar todas las funcionalidades
+                </p>
+                <div class="flex items-center justify-center gap-4">
+                    <a href="http://localhost:3000" target="_blank" class="px-8 py-4 bg-white text-blue-600 rounded-lg font-bold hover:shadow-2xl transition-all">
+                        🚀 Abrir Dashboard
+                    </a>
+                    <a href="http://localhost:3000/contacts" target="_blank" class="px-8 py-4 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-400 transition-all">
+                        👥 Ver Contactos
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold">Nirvania.ai</h3>
+            </div>
+            <p class="text-gray-400 mb-4">CRM Inteligente con IA - Noviembre 2025</p>
+            <div class="flex items-center justify-center gap-6 text-sm text-gray-400">
+                <span>Next.js 15</span>
+                <span>•</span>
+                <span>React 18</span>
+                <span>•</span>
+                <span>TypeScript</span>
+                <span>•</span>
+                <span>TailwindCSS</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

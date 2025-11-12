@@ -31,3 +31,7 @@ export const isDemoMode = () => {
 export const hasRequiredConfig = () => {
   return config.features.enableSupabase && config.features.enableAI
 }
+
+
+
+

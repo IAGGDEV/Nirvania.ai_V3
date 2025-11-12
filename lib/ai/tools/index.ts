@@ -441,3 +441,7 @@ export const TOOL_DESCRIPTIONS = {
     example: '/registrar_actividad type:"call" description:"Llamada de seguimiento"',
   },
 } as const
+
+
+
+

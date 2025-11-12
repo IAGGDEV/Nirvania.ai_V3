@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Contacto - Nirvania</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8">
+            <!-- Header -->
+            <div class="mb-8 text-center">
+                <h1 class="text-3xl font-bold text-gray-900">Formulario de Contacto</h1>
+                <p class="mt-2 text-gray-600">Déjanos tus datos y nos pondremos en contacto contigo</p>
+            </div>
+
+            <!-- Form -->
+            <form id="contactForm" class="space-y-6">
+                <!-- Nombre -->
+                <div class="space-y-2">
+                    <label for="nombre" class="block text-sm font-medium text-gray-700">
+                        Nombre completo <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="nombre" 
+                        name="nombre"
+                        placeholder="Juan Pérez"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                    <p id="nombre-error" class="text-sm text-red-500 hidden"></p>
+                </div>
+
+                <!-- Email -->
+                <div class="space-y-2">
+                    <label for="email" class="block text-sm font-medium text-gray-700">
+                        Email <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        placeholder="juan@ejemplo.com"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                    <p id="email-error" class="text-sm text-red-500 hidden"></p>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="space-y-2">
+                    <label for="telefono" class="block text-sm font-medium text-gray-700">
+                        Teléfono (WhatsApp)
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="telefono" 
+                        name="telefono"
+                        placeholder="+52 1234567890"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                    <p id="telefono-error" class="text-sm text-red-500 hidden"></p>
+                </div>
+
+                <!-- Empresa -->
+                <div class="space-y-2">
+                    <label for="empresa" class="block text-sm font-medium text-gray-700">
+                        Empresa
+                    </label>
+                    <input 
+                        type="text" 
+                        id="empresa" 
+                        name="empresa"
+                        placeholder="Mi Empresa S.A."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+
+                <!-- País -->
+                <div class="space-y-2">
+                    <label for="pais" class="block text-sm font-medium text-gray-700">
+                        País
+                    </label>
+                    <select 
+                        id="pais" 
+                        name="pais"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Selecciona un país</option>
+                        <option value="MX">🇲🇽 México</option>
+                        <option value="BR">🇧🇷 Brasil</option>
+                        <option value="CO">🇨🇴 Colombia</option>
+                        <option value="AR">🇦🇷 Argentina</option>
+                        <option value="CL">🇨🇱 Chile</option>
+                        <option value="PE">🇵🇪 Perú</option>
+                        <option value="EC">🇪🇨 Ecuador</option>
+                        <option value="otro">🌎 Otro</option>
+                    </select>
+                </div>
+
+                <!-- Mensaje -->
+                <div class="space-y-2">
+                    <label for="mensaje" class="block text-sm font-medium text-gray-700">
+                        Mensaje <span class="text-red-500">*</span>
+                    </label>
+                    <textarea 
+                        id="mensaje" 
+                        name="mensaje"
+                        placeholder="¿En qué podemos ayudarte?"
+                        rows="4"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    ></textarea>
+                    <p id="mensaje-error" class="text-sm text-red-500 hidden"></p>
+                </div>
+
+                <!-- Términos -->
+                <div class="flex items-start space-x-2">
+                    <input 
+                        type="checkbox" 
+                        id="terminos" 
+                        name="terminos"
+                        required
+                        class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    >
+                    <label for="terminos" class="text-sm text-gray-600">
+                        Acepto recibir comunicaciones de Nirvania y he leído la política de privacidad
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                    Enviar
+                </button>
+            </form>
+
+            <!-- Powered by -->
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-500">
+                    Powered by <span class="font-semibold text-blue-600">Nirvania</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal (hidden by default) -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
+            <div class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                ¡Gracias por contactarnos!
+            </h2>
+            <p class="text-gray-600 mb-6">
+                Te responderemos pronto.
+            </p>
+            <button 
+                onclick="closeModal()"
+                class="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 transition-colors"
+            >
+                Cerrar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successModal = document.getElementById('successModal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('[id$="-error"]').forEach(el => {
+                el.classList.add('hidden');
+                el.textContent = '';
+            });
+
+            // Get form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            // Validate
+            let hasErrors = false;
+
+            if (!data.nombre || data.nombre.trim().length < 2) {
+                showError('nombre', 'El nombre debe tener al menos 2 caracteres');
+                hasErrors = true;
+            }
+
+            if (!data.email || !isValidEmail(data.email)) {
+                showError('email', 'Por favor ingresa un email válido');
+                hasErrors = true;
+            }
+
+            if (data.telefono && !isValidPhone(data.telefono)) {
+                showError('telefono', 'Por favor ingresa un teléfono válido (ej: +52 1234567890)');
+                hasErrors = true;
+            }
+
+            if (!data.mensaje || data.mensaje.trim().length < 10) {
+                showError('mensaje', 'El mensaje debe tener al menos 10 caracteres');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+            // Simulate API call (in real app, this would be a POST to /api/forms/[id]/submit)
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Show success modal
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Enviar';
+            successModal.classList.remove('hidden');
+            form.reset();
+
+            // Log data (in real app, this would be sent to the API)
+            console.log('Formulario enviado:', data);
+        });
+
+        function showError(fieldId, message) {
+            const errorEl = document.getElementById(`${fieldId}-error`);
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
+            
+            const inputEl = document.getElementById(fieldId);
+            inputEl.classList.add('border-red-500');
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidPhone(phone) {
+            // Remove spaces and dashes
+            const cleaned = phone.replace(/[\s-()]/g, '');
+            // Check if it's a valid LATAM phone (starts with + and has 10-14 digits)
+            return /^\+?[1-9]\d{9,13}$/.test(cleaned);
+        }
+
+        function closeModal() {
+            successModal.classList.add('hidden');
+        }
+
+        // Clear error when user starts typing
+        form.querySelectorAll('input, textarea, select').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('border-red-500');
+                const errorEl = document.getElementById(`${input.id}-error`);
+                if (errorEl) {
+                    errorEl.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+

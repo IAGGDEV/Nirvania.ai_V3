@@ -2,21 +2,20 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { ArrowLeft, Play, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ArrowLeft, Eye, Link as LinkIcon } from 'lucide-react'
 import { useAgentsStore } from '@/lib/stores/agents-mock'
 import { cn } from '@/lib/utils'
 import { SkillOverview } from '@/components/features/agents/skill-overview'
 import { SkillCreate } from '@/components/features/agents/skill-create'
 import { SkillSettings } from '@/components/features/agents/skill-settings'
+import { SkillTestPanel } from '@/components/features/agents/skill-test-panel'
 
 export default function SkillDetailPage() {
   const params = useParams()
   const router = useRouter()
   const skillId = params.id as string
   
-  const { getSkill, loading } = useAgentsStore()
+  const { getSkill } = useAgentsStore()
   const [skill, setSkill] = useState(getSkill(skillId))
   const [activeTab, setActiveTab] = useState('overview')
 
@@ -27,91 +26,122 @@ export default function SkillDetailPage() {
     }
   }, [skillId, getSkill])
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
-      </div>
-    )
-  }
-
   if (!skill) {
     return (
-      <div className="p-8">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Skill no encontrado</h2>
-          <Button onClick={() => router.push('/agents')}>
-            Volver a Agentes
-          </Button>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Skill not found</h2>
+          <button
+            onClick={() => router.push('/agents')}
+            className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
+          >
+            Back to Agents
+          </button>
         </div>
       </div>
     )
   }
 
-  const statusColor = {
-    active: 'bg-green-100 text-green-700',
-    inactive: 'bg-gray-100 text-gray-700',
-    paused: 'bg-yellow-100 text-yellow-700',
+  const statusConfig = {
+    active: { label: 'Active', color: 'text-green-600' },
+    inactive: { label: 'Inactive', color: 'text-gray-500' },
+    paused: { label: 'Paused', color: 'text-orange-600' },
   }[skill.status]
 
   return (
-    <div className="p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <Button
-            variant="ghost"
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="px-12 py-6">
+          <button
             onClick={() => router.back()}
-            className="mb-4"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 text-sm font-medium transition-colors"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Volver
-          </Button>
+            <ArrowLeft size={16} />
+            Back
+          </button>
 
-          <div className="flex items-start justify-between">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{skill.name}</h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Última edición: hace poco • Creado: hace poco por ti
+              <h1 className="text-xl font-semibold text-gray-900">{skill.name}</h1>
+              <p className="mt-1 text-xs text-gray-500">
+                Last edited: just now • Created: just now by you
               </p>
             </div>
             
             <div className="flex items-center gap-3">
-              <span className={cn(
-                "px-3 py-1 rounded-full text-sm font-medium",
-                statusColor
-              )}>
-                {skill.status === 'active' ? 'Activo' : skill.status === 'paused' ? 'Pausado' : 'Inactivo'}
+              <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all" title="Preview">
+                <Eye size={18} />
+              </button>
+              <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all" title="Copy link">
+                <LinkIcon size={18} />
+              </button>
+              <span className={cn("text-xs font-semibold", statusConfig.color)}>
+                {statusConfig.label}
               </span>
-              <Button variant="outline" size="sm">
-                <Play className="mr-2 h-4 w-4" />
-                Probar Skill
-              </Button>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="create">Crear</TabsTrigger>
-            <TabsTrigger value="settings">Configuración</TabsTrigger>
-          </TabsList>
+        <div className="px-12">
+          <div className="flex gap-6 border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={cn(
+                "pb-3 px-1 text-sm font-medium border-b-2 transition-colors",
+                activeTab === 'overview'
+                  ? "border-gray-900 text-gray-900"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              )}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('create')}
+              className={cn(
+                "pb-3 px-1 text-sm font-medium border-b-2 transition-colors",
+                activeTab === 'create'
+                  ? "border-gray-900 text-gray-900"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              )}
+            >
+              Create
+            </button>
+            <button
+              onClick={() => setActiveTab('settings')}
+              className={cn(
+                "pb-3 px-1 text-sm font-medium border-b-2 transition-colors",
+                activeTab === 'settings'
+                  ? "border-gray-900 text-gray-900"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              )}
+            >
+              Settings
+            </button>
+          </div>
+        </div>
+      </div>
 
-          <TabsContent value="overview">
-            <SkillOverview skill={skill} />
-          </TabsContent>
+      {/* Content with Test Panel */}
+      <div className="flex">
+        {/* Main Content */}
+        <div className="flex-1 px-12 py-8">
+          {activeTab === 'overview' && <SkillOverview skill={skill} />}
+          {activeTab === 'create' && <SkillCreate skill={skill} onUpdate={setSkill} />}
+          {activeTab === 'settings' && <SkillSettings skill={skill} onUpdate={setSkill} />}
+        </div>
 
-          <TabsContent value="create">
-            <SkillCreate skill={skill} onUpdate={setSkill} />
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <SkillSettings skill={skill} onUpdate={setSkill} />
-          </TabsContent>
-        </Tabs>
+        {/* Test Panel - Only show on Create tab */}
+        {activeTab === 'create' && (
+          <div className="w-[400px] border-l border-gray-100 bg-gray-50/30">
+            <SkillTestPanel skill={skill} />
+          </div>
+        )}
       </div>
     </div>
   )
 }
+
+
+

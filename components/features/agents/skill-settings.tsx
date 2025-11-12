@@ -181,3 +181,7 @@ export function SkillSettings({ skill, onUpdate }: SkillSettingsProps) {
     </div>
   )
 }
+
+
+
+

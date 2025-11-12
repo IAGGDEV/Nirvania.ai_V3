@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
@@ -11,57 +10,48 @@ import {
   Bot,
   FileText,
   Settings,
-  ChevronLeft,
-  ChevronRight
+  Zap
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface NavItem {
   label: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: React.ComponentType<{ className?: string; size?: number }>
   href: string
 }
 
 const navItems: NavItem[] = [
-  { label: 'Inicio', icon: Home, href: '/' },
-  { label: 'Contactos', icon: Users, href: '/contacts' },
-  { label: 'Empresas', icon: Building2, href: '/companies' },
-  { label: 'Tratos', icon: Briefcase, href: '/deals' },
-  { label: 'Agentes', icon: Bot, href: '/agents' },
-  { label: 'Formularios', icon: FileText, href: '/forms' },
-  { label: 'Configuración', icon: Settings, href: '/settings' },
+  { label: 'Home', icon: Home, href: '/' },
+  { label: 'Contacts', icon: Users, href: '/contacts' },
+  { label: 'Companies', icon: Building2, href: '/companies' },
+  { label: 'Deals', icon: Briefcase, href: '/deals' },
+  { label: 'Agents', icon: Bot, href: '/agents' },
+]
+
+const bottomNavItems: NavItem[] = [
+  { label: 'Forms', icon: FileText, href: '/forms' },
+  { label: 'Settings', icon: Settings, href: '/settings' },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
-    <aside 
-      className={cn(
-        "fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 transition-all duration-300",
-        isCollapsed ? "w-[70px]" : "w-[280px]"
-      )}
-    >
+    <aside className="fixed left-0 top-0 z-40 h-screen w-[72px] bg-white border-r border-gray-100">
       <div className="flex h-full flex-col">
         {/* Logo */}
-        <div className="flex h-16 items-center justify-between px-6 border-b">
-          <div className={cn("transition-opacity", isCollapsed && "opacity-0")}>
-            <h1 className="text-2xl font-bold text-primary-600">Nirvania</h1>
-          </div>
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
-            aria-label={isCollapsed ? 'Expandir sidebar' : 'Colapsar sidebar'}
-          >
-            {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          </button>
+        <div className="flex h-[72px] items-center justify-center border-b border-gray-100">
+          <Link href="/" className="group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all">
+              <Zap className="w-5 h-5 text-white" strokeWidth={2.5} />
+            </div>
+          </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 px-3 py-6 flex flex-col gap-2">
           {navItems.map((item) => {
-            const isActive = pathname === item.href
+            const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
             const Icon = item.icon
 
             return (
@@ -69,42 +59,67 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-                  "hover:bg-gray-100",
-                  isActive && "bg-primary-50 text-primary-600 hover:bg-primary-100 border-l-4 border-primary-600 -ml-1 pl-2",
-                  !isActive && "text-gray-700",
-                  isCollapsed && "justify-center"
+                  "relative flex items-center justify-center h-12 w-12 rounded-lg transition-all group",
+                  isActive 
+                    ? "bg-blue-50 text-blue-600" 
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                 )}
-                title={isCollapsed ? item.label : undefined}
+                title={item.label}
               >
-                <Icon className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && (
-                  <span className="truncate">{item.label}</span>
+                <Icon size={20} strokeWidth={2} />
+                
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-600 rounded-r-full" />
                 )}
+
+                {/* Tooltip */}
+                <div className="absolute left-full ml-3 px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+                  {item.label}
+                </div>
               </Link>
             )
           })}
         </nav>
 
-        {/* User section */}
-        <div className="border-t p-4">
-          <div className={cn(
-            "flex items-center gap-3 px-3 py-2",
-            isCollapsed && "justify-center"
-          )}>
-            <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
-              <span className="text-sm font-medium text-primary-600">U</span>
-            </div>
-            {!isCollapsed && (
-              <div className="truncate">
-                <p className="text-sm font-medium text-gray-900">Usuario</p>
-                <p className="text-xs text-gray-500">usuario@empresa.com</p>
-              </div>
-            )}
-          </div>
+        {/* Bottom Navigation */}
+        <div className="px-3 py-6 flex flex-col gap-2 border-t border-gray-100">
+          {bottomNavItems.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+            const Icon = item.icon
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "relative flex items-center justify-center h-12 w-12 rounded-lg transition-all group",
+                  isActive 
+                    ? "bg-blue-50 text-blue-600" 
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                )}
+                title={item.label}
+              >
+                <Icon size={20} strokeWidth={2} />
+                
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-600 rounded-r-full" />
+                )}
+
+                {/* Tooltip */}
+                <div className="absolute left-full ml-3 px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
+                  {item.label}
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </aside>
   )
 }
+
+
+
 

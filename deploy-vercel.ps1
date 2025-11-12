@@ -25,3 +25,7 @@ vercel --prod
 
 Write-Host "✅ ¡Despliegue completado!" -ForegroundColor Green
 Write-Host "🌐 Tu sitio estará disponible en nirvaniaai.com una vez configures el DNS" -ForegroundColor Cyan
+
+
+
+

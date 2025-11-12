@@ -103,3 +103,7 @@ export function SkillOverview({ skill }: SkillOverviewProps) {
     </div>
   )
 }
+
+
+
+

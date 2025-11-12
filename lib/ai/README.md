@@ -174,3 +174,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_supabase_key
 - [ ] Soporte para múltiples LLMs
 - [ ] Dashboard de monitoring
 - [ ] A/B testing de prompts
+
+
+
+

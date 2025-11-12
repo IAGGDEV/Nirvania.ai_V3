@@ -92,3 +92,7 @@ vercel env add VARIABLE_NAME
 Tu aplicación estará disponible en:
 - https://nirvaniaai.com
 - https://www.nirvaniaai.com
+
+
+
+
