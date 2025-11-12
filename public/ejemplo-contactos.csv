@@ -1,0 +1,7 @@
+name,email,phone,whatsapp,job_title,department,city,country,lifecycle_stage,lead_status
+María García,maria.garcia@techsolutions.mx,+52 55 1234 5678,+52 55 1234 5678,Directora de Marketing,Marketing,Ciudad de México,MX,mql,qualified
+Carlos Rodríguez,carlos@startupbr.com,+55 11 98765 4321,+55 11 98765 4321,CEO,Ejecutivo,São Paulo,BR,sql,contacted
+Ana Martínez,ana.martinez@fintech.co,+57 300 123 4567,+57 300 123 4567,CFO,Finanzas,Bogotá,CO,opportunity,qualified
+Luis González,luis.gonzalez@corp.cl,+56 9 8765 4321,+56 9 8765 4321,CTO,Tecnología,Santiago,CL,lead,new
+Sofía Ramírez,sofia@empresa.ar,+54 11 5678 9012,+54 11 5678 9012,VP de Ventas,Ventas,Buenos Aires,AR,customer,qualified
+

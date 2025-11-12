@@ -1,46 +1,75 @@
+// Contact types based on Supabase schema
 export interface Contact {
   id: string
-  organizationId: string
-  companyId?: string
+  organization_id: string
+  owner_id: string | null
+  company_id: string | null
   
-  // Basic info
+  // Basic Info
   name: string
-  email: string
-  phone?: string
-  role?: string
-  linkedin?: string
+  email: string | null
+  phone: string | null
+  mobile: string | null
+  whatsapp: string | null
   
-  // Location
-  location?: string
-  country?: 'MX' | 'BR' | 'CO' | 'AR' | 'CL' | 'PE' | 'VE' | 'EC' | 'BO' | 'PY' | 'UY' | 'CR' | 'PA' | 'GT' | 'HN' | 'SV' | 'NI'
+  // Professional Info
+  job_title: string | null
+  department: string | null
+  seniority: string | null
   
-  // LATAM specific
-  whatsapp?: string
-  preferredLanguage?: 'es' | 'pt' | 'en'
+  // Social Media
+  linkedin_url: string | null
+  twitter_url: string | null
   
-  // Enrichment
-  enriched: boolean
-  enrichmentData?: Record<string, any>
+  // Address (LATAM fields)
+  street: string | null
+  city: string | null
+  state: string | null
+  postal_code: string | null
+  country: string
   
-  // Source tracking
-  source?: 'form' | 'manual' | 'import' | 'api'
-  formSubmissionId?: string
+  // Tax IDs (LATAM specific)
+  rfc: string | null
+  cnpj: string | null
   
-  // Relations
-  company?: Company
-  deals?: Deal[]
+  // Engagement
+  lifecycle_stage: 'lead' | 'mql' | 'sql' | 'opportunity' | 'customer'
+  lead_score: number
+  lead_status: string
   
   // Metadata
-  createdAt: Date
-  updatedAt: Date
+  source: string | null
+  tags: string[] | null
+  
+  // Communication Preferences
+  email_opt_in: boolean
+  whatsapp_opt_in: boolean
+  
+  // Timestamps
+  last_contacted_at: string | null
+  last_activity_at: string | null
+  created_at: string
+  updated_at: string
+  
+  // Relations (populated via joins)
+  company?: Company
+  owner?: User
+  deals?: Deal[]
 }
 
 export interface Company {
   id: string
   name: string
-  website?: string
-  industry?: string
-  logo?: string
+  website: string | null
+  industry: string | null
+  logo_url: string | null
+}
+
+export interface User {
+  id: string
+  name: string
+  email: string
+  avatar_url: string | null
 }
 
 export interface Deal {
@@ -48,93 +77,49 @@ export interface Deal {
   name: string
   amount: number
   currency: string
-  stage: string
   status: 'open' | 'won' | 'lost'
-  closedAt?: Date
 }
 
 export interface ContactFormData {
   name: string
-  email: string
+  email?: string
   phone?: string
-  role?: string
-  companyId?: string
-  location?: string
-  country?: string
-  linkedin?: string
+  mobile?: string
   whatsapp?: string
-  preferredLanguage?: 'es' | 'pt' | 'en'
+  job_title?: string
+  department?: string
+  seniority?: string
+  company_id?: string
+  lifecycle_stage?: Contact['lifecycle_stage']
+  lead_status?: string
+  country?: string
+  city?: string
+  state?: string
+  street?: string
+  postal_code?: string
+  linkedin_url?: string
+  twitter_url?: string
+  tags?: string[]
+  source?: string
+  email_opt_in?: boolean
+  whatsapp_opt_in?: boolean
 }
 
-export interface ContactColumn {
-  // Direct fields
-  id: 'name' | 'email' | 'phone' | 'role' | 'location' | 'linkedin' | 'createdAt' | 'updatedAt'
-  label: string
-  accessor: string
-  visible: boolean
-  sortable: boolean
-  width?: number
+export interface ContactFilters {
+  lifecycle_stage?: Contact['lifecycle_stage'][]
+  country?: string[]
+  tags?: string[]
+  has_email?: boolean
+  has_phone?: boolean
+  owner_id?: string
+  lead_status?: string[]
+  source?: string[]
 }
 
-export interface ContactView {
-  id: string
-  name: string
-  type: 'table' | 'kanban'
-  columns: ContactColumn[]
-  filters?: ContactFilter[]
-  sort?: ContactSort[]
-  shared: boolean
-  createdBy: string
-  isDefault?: boolean
-}
-
-export interface ContactFilter {
-  field: string
-  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'isEmpty' | 'isNotEmpty'
-  value?: string
-}
-
-export interface ContactSort {
-  field: string
-  direction: 'asc' | 'desc'
-}
-
-export interface ContactsState {
+export interface ContactsResponse {
   contacts: Contact[]
-  loading: boolean
-  selectedContacts: string[]
-  currentView: ContactView | null
-  views: ContactView[]
-  filters: ContactFilter[]
-  sort: ContactSort[]
-  pagination: {
-    page: number
-    pageSize: number
-    total: number
-  }
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
 }
-
-// LATAM Phone patterns
-export const PHONE_PATTERNS = {
-  MX: /^\+52\d{10}$/,     // +52 1234567890
-  BR: /^\+55\d{11}$/,     // +55 11987654321
-  CO: /^\+57\d{10}$/,     // +57 3001234567
-  AR: /^\+54\d{10,11}$/,  // +54 1123456789
-  CL: /^\+56\d{9}$/,      // +56 912345678
-  PE: /^\+51\d{9}$/,      // +51 987654321
-  VE: /^\+58\d{10}$/,     // +58 4121234567
-  EC: /^\+593\d{9}$/,     // +593 987654321
-  BO: /^\+591\d{8}$/,     // +591 76543210
-  PY: /^\+595\d{9}$/,     // +595 971234567
-  UY: /^\+598\d{8}$/,     // +598 98765432
-  CR: /^\+506\d{8}$/,     // +506 87654321
-  PA: /^\+507\d{8}$/,     // +507 67890123
-  GT: /^\+502\d{8}$/,     // +502 56789012
-  HN: /^\+504\d{8}$/,     // +504 98765432
-  SV: /^\+503\d{8}$/,     // +503 76543210
-  NI: /^\+505\d{8}$/      // +505 87654321
-} as const
-
-
-
-

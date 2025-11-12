@@ -1,18 +1,40 @@
 'use client'
 
+import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { ContactsTable } from '@/components/features/contacts/ContactsTable'
-import { useContactsStore } from '@/lib/stores/contacts-mock'
+import { ContactFormModal } from '@/components/features/contacts/ContactFormModal'
+import { useContactsStore } from '@/lib/stores/contacts-supabase'
+import { Button } from '@/components/ui/button'
+import type { ContactFormData } from '@/lib/types/contacts'
 
 export default function ContactsPage() {
-  const { error, clearError } = useContactsStore()
+  const { error, clearError, createContact } = useContactsStore()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleCreateContact = async (data: ContactFormData) => {
+    const result = await createContact(data)
+    if (result) {
+      setIsModalOpen(false)
+    }
+  }
 
   return (
     <div className="p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Contactos</h1>
-          <p className="text-gray-600 mt-1">Gestiona todos tus contactos en un solo lugar</p>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Contactos</h1>
+            <p className="text-gray-600 mt-1">Gestiona todos tus contactos en un solo lugar</p>
+          </div>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Nuevo Contacto
+          </Button>
         </div>
 
         {/* Error message */}
@@ -40,8 +62,15 @@ export default function ContactsPage() {
 
         {/* Contacts Table */}
         <ContactsTable />
+
+        {/* Create Contact Modal */}
+        <ContactFormModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleCreateContact}
+          mode="create"
+        />
       </div>
     </div>
   )
 }
-

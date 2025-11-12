@@ -1,46 +1,45 @@
-import { NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { contactFormSchema } from '@/lib/validations/contacts'
-import { z } from 'zod'
+import { createClient } from '@/lib/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
+import type { ContactFormData } from '@/lib/types/contacts'
 
 // GET /api/contacts/[id] - Get single contact
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient()
-
+    const supabase = createClient()
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    // Fetch contact with relations
     const { data, error } = await supabase
       .from('contacts')
       .select(`
         *,
-        company:companies(*),
-        deals(
-          id,
-          name,
-          amount,
-          currency,
-          stage,
-          status,
-          closed_at
-        )
+        company:companies(id, name, website, industry, logo_url),
+        owner:users!owner_id(id, name, email, avatar_url),
+        deals(id, name, amount, currency, status)
       `)
       .eq('id', params.id)
       .single()
-
-    if (error || !data) {
-      return NextResponse.json(
-        { error: 'Contacto no encontrado' },
-        { status: 404 }
-      )
+    
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return NextResponse.json({ error: 'Contact not found' }, { status: 404 })
+      }
+      throw error
     }
-
+    
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching contact:', error)
     return NextResponse.json(
-      { error: 'Error al obtener contacto' },
+      { error: error.message || 'Error al obtener contacto' },
       { status: 500 }
     )
   }
@@ -48,67 +47,43 @@ export async function GET(
 
 // PATCH /api/contacts/[id] - Update contact
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient()
-    const body = await request.json()
-
-    // Validate request body (partial schema)
-    const partialSchema = contactFormSchema.partial()
-    const validatedData = partialSchema.parse(body)
-
-    // Check if email is being changed and if it already exists
-    if (validatedData.email) {
-      const { data: existingContact } = await supabase
-        .from('contacts')
-        .select('id')
-        .eq('email', validatedData.email)
-        .neq('id', params.id)
-        .single()
-
-      if (existingContact) {
-        return NextResponse.json(
-          { error: 'Ya existe otro contacto con este email' },
-          { status: 409 }
-        )
-      }
+    const supabase = createClient()
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
+    
+    // Parse request body
+    const body: Partial<ContactFormData> = await request.json()
+    
     // Update contact
     const { data, error } = await supabase
       .from('contacts')
-      .update({
-        ...validatedData,
-        updated_at: new Date().toISOString()
-      })
+      .update(body)
       .eq('id', params.id)
       .select(`
         *,
-        company:companies(id, name, website, industry)
+        company:companies(id, name, website, industry, logo_url),
+        owner:users!owner_id(id, name, email, avatar_url)
       `)
       .single()
-
+    
     if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      )
+      console.error('Error updating contact:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
-
-    if (!data) {
-      return NextResponse.json(
-        { error: 'Contacto no encontrado' },
-        { status: 404 }
-      )
-    }
-
+    
     return NextResponse.json(data)
-  } catch (error) {
-    console.error('Error updating contact:', error)
+  } catch (error: any) {
+    console.error('Error in PATCH /api/contacts/[id]:', error)
     return NextResponse.json(
-      { error: 'Error al actualizar contacto' },
+      { error: error.message || 'Error al actualizar contacto' },
       { status: 500 }
     )
   }
@@ -116,58 +91,35 @@ export async function PATCH(
 
 // DELETE /api/contacts/[id] - Delete contact
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient()
-
-    // Check if contact has associated deals
-    const { data: deals } = await supabase
-      .from('deals')
-      .select('id')
-      .eq('primary_contact_id', params.id)
-      .limit(1)
-
-    if (deals && deals.length > 0) {
-      return NextResponse.json(
-        { error: 'No se puede eliminar un contacto con tratos asociados' },
-        { status: 400 }
-      )
+    const supabase = createClient()
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
+    
     // Delete contact
     const { error } = await supabase
       .from('contacts')
       .delete()
       .eq('id', params.id)
-
+    
     if (error) {
-      if (error.code === 'PGRST116') {
-        return NextResponse.json(
-          { error: 'Contacto no encontrado' },
-          { status: 404 }
-        )
-      }
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      )
+      console.error('Error deleting contact:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
-
+    
+    return NextResponse.json({ success: true })
+  } catch (error: any) {
+    console.error('Error in DELETE /api/contacts/[id]:', error)
     return NextResponse.json(
-      { message: 'Contacto eliminado correctamente' },
-      { status: 200 }
-    )
-  } catch (error) {
-    console.error('Error deleting contact:', error)
-    return NextResponse.json(
-      { error: 'Error al eliminar contacto' },
+      { error: error.message || 'Error al eliminar contacto' },
       { status: 500 }
     )
   }
 }
-
-
-
-

@@ -1,21 +1,31 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Plus, Edit2, MoreHorizontal } from 'lucide-react'
+import { Plus, Edit2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useAgentsStore } from '@/lib/stores/agents-mock'
+import { useAgentsStore } from '@/lib/stores/agents-supabase'
+import { PREDEFINED_AGENTS } from '@/lib/types/agents'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 
 export default function AgentsPage() {
   const router = useRouter()
-  const { agents, skills, loading, fetchAgents, fetchSkills } = useAgentsStore()
+  const { skills, loading, fetchSkills } = useAgentsStore()
 
   useEffect(() => {
-    fetchAgents()
     fetchSkills()
-  }, [fetchAgents, fetchSkills])
+  }, [fetchSkills])
 
-  const activeSkillsCount = skills.filter(s => s.status === 'active').length
+  // Group skills by agent category
+  const skillsByAgent = PREDEFINED_AGENTS.map(agent => ({
+    ...agent,
+    skills: skills.filter(skill => 
+      // Match by name pattern or just show all for now
+      true
+    ),
+  }))
+
+  const totalActiveSkills = skills.filter(s => s.status === 'active').length
 
   return (
     <div className="min-h-screen">
@@ -25,15 +35,15 @@ export default function AgentsPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-semibold text-gray-900">Agents</h1>
-              <p className="mt-1 text-sm text-gray-500">{activeSkillsCount} Active Skills Total</p>
+              <p className="mt-1 text-sm text-gray-500">{totalActiveSkills} Active Skills Total</p>
             </div>
-            <button
+            <Button
               onClick={() => router.push('/agents/skills/new')}
-              className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors"
+              className="bg-gray-900 hover:bg-gray-800"
             >
-              <Plus size={18} strokeWidth={2.5} />
+              <Plus size={18} strokeWidth={2.5} className="mr-2" />
               Create New Skill
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -64,14 +74,14 @@ export default function AgentsPage() {
           </div>
 
           {/* Table Body */}
-          {loading && agents.length === 0 ? (
+          {loading && skills.length === 0 ? (
             <div className="px-6 py-16 text-center">
               <div className="inline-block w-8 h-8 border-3 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
             </div>
           ) : (
             <div className="divide-y divide-gray-100">
-              {agents.map((agent) => {
-                const agentSkills = skills.filter(s => s.agentId === agent.id)
+              {skillsByAgent.map((agent) => {
+                const agentSkills = agent.skills
                 
                 return (
                   <div key={agent.id}>
@@ -96,49 +106,41 @@ export default function AgentsPage() {
                         <p className="text-sm text-gray-500 mb-4">
                           No skills yet
                         </p>
-                        <button
+                        <Button
+                          variant="outline"
                           onClick={() => router.push(`/agents/skills/new?agent=${agent.id}`)}
-                          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                         >
-                          <Plus size={16} />
+                          <Plus size={16} className="mr-2" />
                           Add Skill
-                        </button>
+                        </Button>
                       </div>
                     ) : (
-                      agentSkills.map((skill, index) => (
+                      agentSkills.map((skill) => (
                         <div
                           key={skill.id}
-                          className={cn(
-                            "grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50/50 cursor-pointer transition-colors group",
-                            index === agentSkills.length - 1 && "border-b-0"
-                          )}
+                          className="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50/50 cursor-pointer transition-colors group"
                           onClick={() => router.push(`/agents/skills/${skill.id}`)}
                         >
-                          {/* Agent Name (Empty for skills, shown on agent row) */}
                           <div className="col-span-3" />
                           
-                          {/* Skill Name */}
                           <div className="col-span-3 flex items-center">
                             <span className="text-sm font-medium text-gray-900">
                               {skill.name}
                             </span>
                           </div>
                           
-                          {/* Completed */}
                           <div className="col-span-2 flex items-center justify-center">
                             <span className="text-sm text-gray-700">
                               {skill.succeeded}
                             </span>
                           </div>
                           
-                          {/* Running */}
                           <div className="col-span-2 flex items-center justify-center">
                             <span className="text-sm text-gray-700">
-                              {skill.inProgress}
+                              {skill.in_progress}
                             </span>
                           </div>
                           
-                          {/* Status */}
                           <div className="col-span-1 flex items-center justify-center">
                             <span
                               className={cn(
@@ -152,7 +154,6 @@ export default function AgentsPage() {
                             </span>
                           </div>
                           
-                          {/* Actions */}
                           <div className="col-span-1 flex items-center justify-end gap-2">
                             <button
                               onClick={(e) => {
@@ -163,13 +164,6 @@ export default function AgentsPage() {
                               title="Edit"
                             >
                               <Edit2 size={16} />
-                            </button>
-                            <button
-                              onClick={(e) => e.stopPropagation()}
-                              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
-                              title="More"
-                            >
-                              <MoreHorizontal size={16} />
                             </button>
                           </div>
                         </div>
@@ -185,4 +179,3 @@ export default function AgentsPage() {
     </div>
   )
 }
-

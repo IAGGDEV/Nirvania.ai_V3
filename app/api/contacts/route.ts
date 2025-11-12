@@ -1,129 +1,186 @@
-import { NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { contactFormSchema, contactSearchSchema } from '@/lib/validations/contacts'
+import { createClient } from '@/lib/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
+import type { ContactFormData } from '@/lib/types/contacts'
 
-// GET /api/contacts - List contacts with filters and pagination
-export async function GET(request: Request) {
+// GET /api/contacts - List contacts with pagination, search, and filters
+export async function GET(request: NextRequest) {
   try {
-    const supabase = createServerSupabaseClient()
-    const { searchParams } = new URL(request.url)
-
-    // Parse and validate search params
-    const params = contactSearchSchema.parse({
-      query: searchParams.get('query') || undefined,
-      page: searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1,
-      pageSize: searchParams.get('pageSize') ? parseInt(searchParams.get('pageSize')!) : 25,
-    })
-
+    const supabase = createClient()
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    // Get query parameters
+    const searchParams = request.nextUrl.searchParams
+    const page = parseInt(searchParams.get('page') || '1')
+    const pageSize = parseInt(searchParams.get('pageSize') || '20')
+    const search = searchParams.get('search') || ''
+    const sortBy = searchParams.get('sortBy') || 'created_at'
+    const sortOrder = searchParams.get('sortOrder') || 'desc'
+    
     // Build query
     let query = supabase
       .from('contacts')
       .select(`
         *,
-        company:companies(id, name, website, industry),
-        deals(id, name, amount, currency, stage, status)
+        company:companies(id, name, website, industry, logo_url),
+        owner:users!owner_id(id, name, email, avatar_url)
       `, { count: 'exact' })
-
-    // Apply search query
-    if (params.query) {
-      query = query.or(`
-        name.ilike.%${params.query}%,
-        email.ilike.%${params.query}%,
-        role.ilike.%${params.query}%,
-        location.ilike.%${params.query}%
-      `)
+    
+    // Apply search
+    if (search) {
+      query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%`)
     }
-
+    
+    // Apply sorting
+    query = query.order(sortBy, { ascending: sortOrder === 'asc' })
+    
     // Apply pagination
-    const from = (params.page - 1) * params.pageSize
-    const to = from + params.pageSize - 1
+    const from = (page - 1) * pageSize
+    const to = from + pageSize - 1
     query = query.range(from, to)
-
-    // Default sorting by created_at desc
-    query = query.order('created_at', { ascending: false })
-
+    
     const { data, error, count } = await query
-
+    
     if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      )
+      console.error('Error fetching contacts:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
-
+    
     return NextResponse.json({
-      data: data || [],
-      pagination: {
-        page: params.page,
-        pageSize: params.pageSize,
-        total: count || 0,
-        pages: Math.ceil((count || 0) / params.pageSize)
-      }
+      contacts: data,
+      total: count,
+      page,
+      pageSize,
+      totalPages: count ? Math.ceil(count / pageSize) : 0,
     })
-  } catch (error) {
-    console.error('Error fetching contacts:', error)
+  } catch (error: any) {
+    console.error('Error in GET /api/contacts:', error)
     return NextResponse.json(
-      { error: 'Error al obtener contactos' },
+      { error: error.message || 'Error al obtener contactos' },
       { status: 500 }
     )
   }
 }
 
 // POST /api/contacts - Create new contact
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const supabase = createServerSupabaseClient()
-    const body = await request.json()
-
-    // Validate request body
-    const validatedData = contactFormSchema.parse(body)
-
-    // Check if email already exists
-    const { data: existingContact } = await supabase
-      .from('contacts')
-      .select('id')
-      .eq('email', validatedData.email)
-      .single()
-
-    if (existingContact) {
-      return NextResponse.json(
-        { error: 'Ya existe un contacto con este email' },
-        { status: 409 }
-      )
+    const supabase = createClient()
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
-    // Create contact
+    
+    // Get user's organization
+    const { data: userData } = await supabase
+      .from('users')
+      .select('organization_id')
+      .eq('id', user.id)
+      .single()
+    
+    if (!userData) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+    
+    // Parse request body
+    const body: ContactFormData = await request.json()
+    
+    // Validate required fields
+    if (!body.name) {
+      return NextResponse.json({ error: 'Name is required' }, { status: 400 })
+    }
+    
+    // Prepare contact data
+    const contactData = {
+      ...body,
+      organization_id: userData.organization_id,
+      owner_id: user.id,
+      lifecycle_stage: body.lifecycle_stage || 'lead',
+      lead_status: body.lead_status || 'new',
+      country: body.country || 'MX',
+      lead_score: 0,
+      email_opt_in: body.email_opt_in !== false,
+      whatsapp_opt_in: body.whatsapp_opt_in !== false,
+      source: body.source || 'manual',
+    }
+    
+    // Insert contact
     const { data, error } = await supabase
       .from('contacts')
-      .insert({
-        ...validatedData,
-        organization_id: 'temp-org-id', // TODO: Get from auth context
-        enriched: false,
-        source: 'manual'
-      })
+      .insert(contactData)
       .select(`
         *,
-        company:companies(id, name, website, industry)
+        company:companies(id, name, website, industry, logo_url),
+        owner:users!owner_id(id, name, email, avatar_url)
       `)
       .single()
-
+    
     if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      )
+      console.error('Error creating contact:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
-
+    
     return NextResponse.json(data, { status: 201 })
-  } catch (error) {
-    console.error('Error creating contact:', error)
+  } catch (error: any) {
+    console.error('Error in POST /api/contacts:', error)
     return NextResponse.json(
-      { error: 'Error al crear contacto' },
+      { error: error.message || 'Error al crear contacto' },
       { status: 500 }
     )
   }
 }
 
-
-
-
+// DELETE /api/contacts - Delete multiple contacts
+export async function DELETE(request: NextRequest) {
+  try {
+    const supabase = createClient()
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    // Get IDs from query or body
+    const searchParams = request.nextUrl.searchParams
+    const idsParam = searchParams.get('ids')
+    
+    let ids: string[] = []
+    
+    if (idsParam) {
+      ids = idsParam.split(',')
+    } else {
+      const body = await request.json()
+      ids = body.ids || []
+    }
+    
+    if (ids.length === 0) {
+      return NextResponse.json({ error: 'No IDs provided' }, { status: 400 })
+    }
+    
+    // Delete contacts
+    const { error } = await supabase
+      .from('contacts')
+      .delete()
+      .in('id', ids)
+    
+    if (error) {
+      console.error('Error deleting contacts:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    
+    return NextResponse.json({ success: true, deleted: ids.length })
+  } catch (error: any) {
+    console.error('Error in DELETE /api/contacts:', error)
+    return NextResponse.json(
+      { error: error.message || 'Error al eliminar contactos' },
+      { status: 500 }
+    )
+  }
+}

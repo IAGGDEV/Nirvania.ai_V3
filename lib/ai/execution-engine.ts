@@ -3,7 +3,8 @@ import { ChatPromptTemplate } from '@langchain/core/prompts'
 import { AgentExecutor, createToolCallingAgent } from 'langchain/agents'
 import { createClaudeClient } from './claude-client'
 import { getToolsForSkill, ToolName } from './tools/index'
-import type { Skill, SkillRun } from '@/lib/types/agents'
+import type { Skill, SkillRun, LogEntry } from '@/lib/types/agents'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 /**
  * Logger para tracking de ejecuciones
@@ -331,3 +332,72 @@ export function getExecutionEngine(): SkillExecutionEngine {
   }
   return executionEngineInstance
 }
+
+/**
+ * Execute a skill with Claude AI using Supabase data
+ */
+export async function executeSkillWithClaude(
+  skill: Skill,
+  input: string,
+  supabase: SupabaseClient
+): Promise<{ output: string }> {
+  const logger = new ExecutionLogger()
+  
+  try {
+    logger.info('Initializing Claude client...')
+    const claude = createClaudeClient()
+    
+    // Build system prompt with skill configuration
+    const systemPrompt = `You are an AI agent executing a skill in the Nirvania CRM system.
+
+SKILL: ${skill.name}
+${skill.description ? `DESCRIPTION: ${skill.description}` : ''}
+
+${skill.goal ? `GOAL:\n${skill.goal}\n` : ''}
+
+INSTRUCTIONS:
+${skill.instructions}
+
+${skill.restrictions ? `\nRESTRICTIONS (Things you should NEVER do):\n${skill.restrictions}` : ''}
+
+${skill.memory ? `\nMEMORY (Important context to remember):\n${skill.memory}` : ''}
+
+You have access to the following tools:
+${skill.available_tools?.map(tool => `- ${tool}`).join('\n') || 'No tools available'}
+
+Execute the task step by step, thinking through your approach before taking actions.
+`
+    
+    logger.info('Sending request to Claude API...')
+    
+    // Execute with Claude
+    const response = await claude.messages.create({
+      model: 'claude-3-5-sonnet-20241022',
+      max_tokens: 4096,
+      system: systemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: input,
+        },
+      ],
+    })
+    
+    const output = response.content[0].type === 'text' 
+      ? response.content[0].text 
+      : 'No text output'
+    
+    logger.info('Execution completed successfully', {
+      input_length: input.length,
+      output_length: output.length,
+      tokens_used: response.usage,
+    })
+    
+    return { output }
+    
+  } catch (error: any) {
+    logger.error('Execution failed', { error: error.message })
+    throw error
+  }
+}
+

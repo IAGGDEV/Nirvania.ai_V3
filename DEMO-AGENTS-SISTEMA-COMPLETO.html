@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Agentes IA - Nirvania.ai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page-content { animation: fadeIn 0.3s ease; }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible-content.open { max-height: 1000px; }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin { animation: spin 1s linear infinite; }
+        
+        .log-entry {
+            animation: fadeIn 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 antialiased">
+
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-40 h-screen w-[72px] bg-white border-r border-gray-100">
+        <div class="flex h-full flex-col">
+            <div class="flex h-[72px] items-center justify-center border-b border-gray-100">
+                <div onclick="showPage('list')" class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm cursor-pointer hover:shadow-md transition-all">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+            </div>
+            <nav class="flex-1 px-3 py-6 flex flex-col gap-2">
+                <button onclick="showPage('list')" id="nav-agents" class="relative flex items-center justify-center h-12 w-12 rounded-lg transition-all group bg-blue-50 text-blue-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-600 rounded-r-full"></div>
+                    <div class="tooltip absolute left-full ml-3 px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                        Agents
+                    </div>
+                </button>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="pl-[72px] min-h-screen">
+        
+        <!-- PAGE: AGENTS LIST -->
+        <div id="page-list" class="page-content">
+            <div class="bg-white border-b border-gray-100">
+                <div class="px-12 py-8">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-2xl font-semibold text-gray-900">Agents</h1>
+                            <p class="mt-1 text-sm text-gray-500">2 Active Skills Total</p>
+                        </div>
+                        <button onclick="showPage('create')" class="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Create New Skill
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-12 py-8">
+                <div class="bg-white rounded-lg border border-gray-200">
+                    <!-- Table Header -->
+                    <div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <div class="col-span-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Agents</div>
+                        <div class="col-span-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Skills</div>
+                        <div class="col-span-2 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Completed</div>
+                        <div class="col-span-2 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Running</div>
+                        <div class="col-span-1 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Status</div>
+                        <div class="col-span-1 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</div>
+                    </div>
+
+                    <!-- Agent 1: Account Manager -->
+                    <div>
+                        <div class="px-6 py-5 bg-gray-50/30">
+                            <div class="flex items-center gap-3">
+                                <div class="text-3xl">🎯</div>
+                                <div>
+                                    <h3 class="text-base font-semibold text-gray-900">Account Manager</h3>
+                                    <p class="mt-0.5 text-sm text-gray-500">Drives your pipeline and grows existing accounts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div onclick="showPage('detail')" class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50/50 cursor-pointer transition-colors group border-b border-gray-100">
+                            <div class="col-span-3"></div>
+                            <div class="col-span-3 flex items-center">
+                                <span class="text-sm font-medium text-gray-900">Follow-up Automation</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-700">24</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-700">3</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="text-xs font-medium text-green-700">active</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-end gap-2">
+                                <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agent 2: Outbound Manager -->
+                    <div>
+                        <div class="px-6 py-5 bg-gray-50/30">
+                            <div class="flex items-center gap-3">
+                                <div class="text-3xl">📧</div>
+                                <div>
+                                    <h3 class="text-base font-semibold text-gray-900">Outbound Manager</h3>
+                                    <p class="mt-0.5 text-sm text-gray-500">Proactively finds and engages new prospects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div onclick="showPage('detail')" class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50/50 cursor-pointer transition-colors group border-b border-gray-100">
+                            <div class="col-span-3"></div>
+                            <div class="col-span-3 flex items-center">
+                                <span class="text-sm font-medium text-gray-900">Lead Generation Skill</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-700">12</span>
+                            </div>
+                            <div class="col-span-2 flex items-center justify-center">
+                                <span class="text-sm text-gray-700">1</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-center">
+                                <span class="text-xs font-medium text-green-700">active</span>
+                            </div>
+                            <div class="col-span-1 flex items-center justify-end gap-2">
+                                <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agent 3: Inbound Manager -->
+                    <div>
+                        <div class="px-6 py-5 bg-gray-50/30">
+                            <div class="flex items-center gap-3">
+                                <div class="text-3xl">📥</div>
+                                <div>
+                                    <h3 class="text-base font-semibold text-gray-900">Inbound Manager</h3>
+                                    <p class="mt-0.5 text-sm text-gray-500">Handles inbound inquiries from potential customers</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-12 text-center">
+                            <p class="text-sm text-gray-500 mb-4">No skills yet</p>
+                            <button onclick="showPage('create')" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Add Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: SKILL DETAIL -->
+        <div id="page-detail" class="page-content hidden min-h-screen bg-white">
+            <!-- Header -->
+            <div class="bg-white border-b border-gray-100">
+                <div class="px-12 py-6">
+                    <button onclick="showPage('list')" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Back to Agents
+                    </button>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-xl font-semibold text-gray-900">Follow-up Automation</h1>
+                            <p class="mt-1 text-xs text-gray-500">Last edited: 2 hours ago • Created: Nov 12 by you</p>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-semibold text-green-600">● Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="px-12">
+                    <div class="flex gap-6 border-b border-gray-200">
+                        <button onclick="showSkillTab('overview')" class="skill-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors border-gray-900 text-gray-900" id="tab-overview">
+                            Overview
+                        </button>
+                        <button onclick="showSkillTab('create')" class="skill-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors border-transparent text-gray-500 hover:text-gray-700" id="tab-create">
+                            Create
+                        </button>
+                        <button onclick="showSkillTab('settings')" class="skill-tab pb-3 px-1 text-sm font-medium border-b-2 transition-colors border-transparent text-gray-500 hover:text-gray-700" id="tab-settings">
+                            Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content with Test Panel -->
+            <div class="flex">
+                <!-- Main Content -->
+                <div class="flex-1 px-12 py-8">
+                    <!-- Overview Tab -->
+                    <div id="skill-content-overview" class="skill-content max-w-3xl">
+                        <!-- Metrics Cards -->
+                        <div class="grid grid-cols-4 gap-4 mb-8">
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-2xl font-bold text-gray-900">24</div>
+                                <div class="text-sm text-gray-600">Succeeded</div>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-2xl font-bold text-orange-600">3</div>
+                                <div class="text-sm text-gray-600">Running</div>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-2xl font-bold text-red-600">2</div>
+                                <div class="text-sm text-gray-600">Failed</div>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-2xl font-bold text-gray-600">29</div>
+                                <div class="text-sm text-gray-600">Total Runs</div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Runs -->
+                        <div class="bg-white border border-gray-200 rounded-lg">
+                            <div class="px-6 py-4 border-b border-gray-200">
+                                <h3 class="text-base font-semibold text-gray-900">Recent Skill Runs</h3>
+                            </div>
+                            <div class="divide-y divide-gray-100">
+                                <!-- Run 1 -->
+                                <div class="px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 rounded-full">Succeeded</span>
+                                                <span class="text-sm text-gray-900">Follow-up with María García</span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 mt-1">hace 23 minutos • Duration: 3.2s</p>
+                                        </div>
+                                        <button onclick="showRunDetail(1)" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Ver detalles</button>
+                                    </div>
+                                </div>
+
+                                <!-- Run 2 -->
+                                <div class="px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-3">
+                                                <span class="flex items-center gap-1 text-xs font-medium px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
+                                                    <svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    Running
+                                                </span>
+                                                <span class="text-sm text-gray-900">Researching Carlos Rodríguez</span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 mt-1">Started 45 seconds ago</p>
+                                        </div>
+                                        <button onclick="showRunDetail(2)" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Ver en vivo</button>
+                                    </div>
+                                </div>
+
+                                <!-- Run 3 -->
+                                <div class="px-6 py-4 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 rounded-full">Succeeded</span>
+                                                <span class="text-sm text-gray-900">Send proposal to Ana Martínez</span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 mt-1">hace 2 horas • Duration: 5.7s</p>
+                                        </div>
+                                        <button onclick="showRunDetail(3)" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Ver detalles</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Create Tab -->
+                    <div id="skill-content-create" class="skill-content hidden max-w-3xl space-y-8">
+                        <!-- Goal -->
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-900 mb-1">Goal</h3>
+                            <p class="text-sm text-gray-500 mb-4">Define an overall goal for the skill.</p>
+                            <textarea rows="3" placeholder="Automatically follow up with leads who haven't responded in 3 days..." class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" readonly>Automatically follow up with warm leads who haven't been contacted in the last 7 days. Personalize each message based on their industry and previous interactions.</textarea>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div>
+                            <div class="mb-4">
+                                <h3 class="text-base font-semibold text-gray-900 mb-1">Instructions</h3>
+                                <p class="text-sm text-gray-500">Step-by-step instructions for the skill.</p>
+                            </div>
+                            <textarea rows="12" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono" readonly>1. Search for all contacts with:
+   - Lifecycle stage: "lead" or "mql"
+   - Last contacted: more than 7 days ago
+   - Email opt-in: true
+
+2. For each contact:
+   - Research their company and industry
+   - Check their LinkedIn activity
+   - Draft a personalized follow-up email
+   
+3. Before sending, check:
+   - No email sent in last 3 days
+   - Contact hasn't unsubscribed
+   - Working hours in their timezone
+
+4. Send email and log activity in CRM
+
+5. Wait for response and schedule next follow-up</textarea>
+                        </div>
+
+                        <!-- Available Tools -->
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-900 mb-4">Available Tools</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" checked class="rounded" disabled>
+                                    <span class="text-sm">🔍 Search Contacts</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" checked class="rounded" disabled>
+                                    <span class="text-sm">📧 Send Email</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" checked class="rounded" disabled>
+                                    <span class="text-sm">🌐 Web Research</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" class="rounded" disabled>
+                                    <span class="text-sm">💼 Create Deal</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="skill-content-settings" class="skill-content hidden max-w-3xl space-y-8">
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-900 mb-1">Skill Name</h3>
+                            <input type="text" value="Follow-up Automation" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                        </div>
+
+                        <div>
+                            <h3 class="text-base font-semibold text-gray-900 mb-1">Description</h3>
+                            <textarea rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm resize-none">Automatically follows up with warm leads using personalized messages based on their profile and activity.</textarea>
+                        </div>
+
+                        <div class="border-t pt-8">
+                            <h3 class="text-base font-semibold text-red-600 mb-2">Danger Zone</h3>
+                            <p class="text-sm text-gray-600 mb-4">Once you delete a skill, there is no going back.</p>
+                            <button class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium">
+                                Delete Skill
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Panel - Shows on all tabs -->
+                <div id="test-panel" class="w-[400px] border-l border-gray-100 bg-gray-50/30">
+                    <div class="sticky top-0 h-screen overflow-y-auto p-8">
+                        <div class="mb-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-2">Test Skill with Claude AI</h2>
+                            <p class="text-sm text-gray-600">Run this skill in test mode with real Claude AI execution.</p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Test Input <span class="text-red-500">*</span></label>
+                                <textarea id="test-input" rows="6" placeholder="Find all leads from Mexico who haven't been contacted in the last week and draft personalized follow-ups..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+                            </div>
+
+                            <button onclick="executeSkillTest()" id="test-button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
+                                </svg>
+                                Execute with Claude
+                            </button>
+
+                            <!-- Execution Results -->
+                            <div id="execution-results" class="hidden">
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                                    <h3 class="text-sm font-semibold text-blue-900 mb-2">✨ Execution Results</h3>
+                                    <div class="text-xs text-blue-800 space-y-1">
+                                        <div class="flex justify-between">
+                                            <span>Status:</span>
+                                            <span id="result-status" class="font-semibold">—</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Duration:</span>
+                                            <span id="result-duration" class="font-semibold">—</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Live Logs -->
+                                <div class="bg-gray-900 rounded-lg p-4 max-h-64 overflow-y-auto">
+                                    <div class="text-xs text-green-400 font-mono space-y-1" id="execution-logs">
+                                        <!-- Logs will be added here -->
+                                    </div>
+                                </div>
+
+                                <!-- Output -->
+                                <div class="mt-4 bg-white border border-gray-200 rounded-lg p-4">
+                                    <h4 class="text-sm font-semibold text-gray-900 mb-2">Output:</h4>
+                                    <div id="execution-output" class="text-sm text-gray-700 whitespace-pre-wrap"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <p class="text-xs text-blue-800">💡 <strong>Tip:</strong> Test mode uses real Claude AI but doesn't send actual emails or modify real data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: CREATE SKILL -->
+        <div id="page-create" class="page-content hidden min-h-screen bg-white">
+            <div class="bg-white border-b border-gray-100">
+                <div class="px-12 py-8">
+                    <button onclick="showPage('list')" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Back
+                    </button>
+
+                    <h1 class="text-xl font-semibold text-gray-900">Create New Skill</h1>
+                </div>
+            </div>
+
+            <div class="px-12 py-8 max-w-3xl">
+                <form class="space-y-8">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Skill Name <span class="text-red-500">*</span></label>
+                        <input type="text" placeholder="My New Skill" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Agent Type</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                            <option>🎯 Account Manager</option>
+                            <option>📧 Outbound Manager</option>
+                            <option>📥 Inbound Manager</option>
+                            <option>⚙️ System Manager</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Instructions <span class="text-red-500">*</span></label>
+                        <textarea rows="10" placeholder="Write step-by-step instructions..." class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm resize-none font-mono"></textarea>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="showPage('list')" class="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+                        <button type="submit" onclick="event.preventDefault(); alert('✅ Skill creado! En la app real se guardará en Supabase')" class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create Skill</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showPage(pageName) {
+            document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+            document.getElementById('page-' + pageName).classList.remove('hidden');
+        }
+
+        function showSkillTab(tabName) {
+            document.querySelectorAll('.skill-tab').forEach(tab => {
+                tab.classList.remove('border-gray-900', 'text-gray-900');
+                tab.classList.add('border-transparent', 'text-gray-500');
+            });
+            document.querySelectorAll('.skill-content').forEach(content => content.classList.add('hidden'));
+            
+            document.getElementById('tab-' + tabName).classList.add('border-gray-900', 'text-gray-900');
+            document.getElementById('tab-' + tabName).classList.remove('border-transparent', 'text-gray-500');
+            document.getElementById('skill-content-' + tabName).classList.remove('hidden');
+        }
+
+        function executeSkillTest() {
+            const input = document.getElementById('test-input').value;
+            if (!input) {
+                alert('Por favor ingresa un input para probar');
+                return;
+            }
+
+            const button = document.getElementById('test-button');
+            const results = document.getElementById('execution-results');
+            const logsContainer = document.getElementById('execution-logs');
+            const outputContainer = document.getElementById('execution-output');
+            
+            // Show loading
+            button.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Executing...';
+            button.disabled = true;
+            results.classList.remove('hidden');
+            logsContainer.innerHTML = '';
+            
+            // Simulate logs
+            const logs = [
+                { time: 0, msg: '⚡ Starting skill execution...' },
+                { time: 500, msg: '🔍 Searching for contacts matching criteria...' },
+                { time: 1200, msg: '✅ Found 3 contacts to follow up' },
+                { time: 2000, msg: '🤖 Generating personalized message for María García...' },
+                { time: 3500, msg: '📧 Email drafted successfully' },
+                { time: 4200, msg: '✅ Execution completed' },
+            ];
+            
+            let currentLog = 0;
+            
+            function addLog() {
+                if (currentLog >= logs.length) {
+                    // Execution complete
+                    button.innerHTML = '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg> Execute with Claude';
+                    button.disabled = false;
+                    
+                    document.getElementById('result-status').innerHTML = '<span class="text-green-600">✅ Succeeded</span>';
+                    document.getElementById('result-duration').textContent = '4.2s';
+                    
+                    outputContainer.innerHTML = `Execution Summary:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ 3 contacts processed
+📧 3 personalized emails drafted
+⏰ Next follow-up scheduled
+
+Example output for María García:
+────────────────────────────────
+Subject: Quick question about your marketing automation needs
+
+Hi María,
+
+I hope this message finds you well. I noticed you were exploring our CRM solutions last week and wanted to check if you had any questions.
+
+Given your role as Marketing Director at Tech Solutions México, I thought you might be interested in our latest AI-powered features that help automate lead nurturing...
+
+Best regards,
+Irving Garcia`;
+                    return;
+                }
+                
+                const log = logs[currentLog];
+                const logEl = document.createElement('div');
+                logEl.className = 'log-entry';
+                logEl.textContent = `[${new Date().toLocaleTimeString()}] ${log.msg}`;
+                logsContainer.appendChild(logEl);
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+                
+                currentLog++;
+                setTimeout(addLog, logs[currentLog]?.time - logs[currentLog - 1]?.time || 500);
+            }
+            
+            addLog();
+        }
+
+        function showRunDetail(runId) {
+            alert(`Ver detalles de Run #${runId}\n\nEn la app real se mostraría:\n• Input completo\n• Output de Claude\n• Logs de ejecución\n• Métricas\n• Acciones tomadas`);
+        }
+    </script>
+
+</body>
+</html>
+
