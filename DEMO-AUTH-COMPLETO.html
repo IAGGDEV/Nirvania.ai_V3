@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Autenticación Completa - Nirvania.ai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Header -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">Nirvania.ai</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="DEMO-LOGIN.html" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
+                        Iniciar Sesión
+                    </a>
+                    <a href="DEMO-SIGNUP.html" class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Comenzar Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
+        <!-- Title -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                🔐 Sistema de Autenticación Completo
+            </h1>
+            <p class="text-xl text-gray-600">
+                Demos interactivos del sistema de login y registro
+            </p>
+        </div>
+
+        <!-- Demo Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            
+            <!-- Login Demo -->
+            <a href="DEMO-LOGIN.html" class="block group">
+                <div class="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-blue-400 hover:shadow-xl transition-all">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Login</h2>
+                            <p class="text-sm text-gray-600">Iniciar sesión</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Formulario de inicio de sesión con:
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Email y contraseña
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            OAuth con Google
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Recuperar contraseña
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Validación de errores
+                        </li>
+                    </ul>
+                    <div class="mt-6 flex items-center gap-2 text-blue-600 font-medium group-hover:gap-3 transition-all">
+                        Ver demo
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Signup Demo -->
+            <a href="DEMO-SIGNUP.html" class="block group">
+                <div class="bg-white rounded-2xl border-2 border-gray-200 p-8 hover:border-blue-400 hover:shadow-xl transition-all">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Signup</h2>
+                            <p class="text-sm text-gray-600">Crear cuenta</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Formulario de registro completo con:
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Registro con email
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            OAuth con Google
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Crear organización
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Validación de contraseña
+                        </li>
+                    </ul>
+                    <div class="mt-6 flex items-center gap-2 text-blue-600 font-medium group-hover:gap-3 transition-all">
+                        Ver demo
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Features Section -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-8 mb-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">🎯 Características Implementadas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Autenticación con Supabase</h3>
+                        <p class="text-sm text-gray-600">Sistema seguro basado en PostgreSQL con RLS</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Multi-Tenancy</h3>
+                        <p class="text-sm text-gray-600">Cada usuario con su propia organización aislada</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">OAuth con Google</h3>
+                        <p class="text-sm text-gray-600">Login con un solo click usando Google</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Protección de Rutas</h3>
+                        <p class="text-sm text-gray-600">Middleware automático que protege páginas privadas</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Auto-Setup</h3>
+                        <p class="text-sm text-gray-600">Creación automática de org, pipeline y tags</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Sesiones Persistentes</h3>
+                        <p class="text-sm text-gray-600">Mantiene sesión activa con cookies seguras</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">⚙️ Detalles Técnicos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Backend</h3>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• Supabase Auth</li>
+                        <li>• PostgreSQL 15</li>
+                        <li>• Row Level Security</li>
+                        <li>• JWT Tokens</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Frontend</h3>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• Next.js 15</li>
+                        <li>• React 18</li>
+                        <li>• TypeScript</li>
+                        <li>• Tailwind CSS</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Seguridad</h3>
+                    <ul class="space-y-1 text-sm text-gray-700">
+                        <li>• HTTPS only</li>
+                        <li>• Password hashing</li>
+                        <li>• CSRF protection</li>
+                        <li>• Rate limiting</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-16">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                ¿Listo para probar?
+            </h2>
+            <div class="flex items-center justify-center gap-4">
+                <a href="DEMO-LOGIN.html" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+                    Ver Login
+                </a>
+                <a href="DEMO-SIGNUP.html" class="px-8 py-3 bg-white border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
+                    Ver Signup
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
