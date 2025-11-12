@@ -10,9 +10,12 @@ import {
   Bot,
   FileText,
   Settings,
-  Zap
+  Zap,
+  User,
+  LogOut
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { LogoutButton } from '@/components/auth/logout-button'
 
 interface NavItem {
   label: string
@@ -33,7 +36,11 @@ const bottomNavItems: NavItem[] = [
   { label: 'Settings', icon: Settings, href: '/settings' },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  user?: any
+}
+
+export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname()
 
   return (
@@ -83,7 +90,30 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Navigation */}
-        <div className="px-3 py-6 flex flex-col gap-2 border-t border-gray-100">
+        <div className="px-3 py-3 flex flex-col gap-2 border-t border-gray-100">
+          {/* User Profile */}
+          {user && (
+            <div className="relative group mb-2">
+              <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-gray-100 text-gray-600">
+                {user.avatar_url ? (
+                  <img 
+                    src={user.avatar_url} 
+                    alt={user.name}
+                    className="h-10 w-10 rounded-lg object-cover"
+                  />
+                ) : (
+                  <User size={20} strokeWidth={2} />
+                )}
+              </div>
+              
+              {/* Tooltip con info de usuario */}
+              <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                <div className="font-medium">{user.name}</div>
+                <div className="text-gray-400 text-xs">{user.email}</div>
+              </div>
+            </div>
+          )}
+
           {bottomNavItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
             const Icon = item.icon
@@ -114,6 +144,16 @@ export function Sidebar() {
               </Link>
             )
           })}
+
+          {/* Logout Button */}
+          <LogoutButton className="relative flex items-center justify-center h-12 w-12 rounded-lg transition-all group text-gray-500 hover:bg-gray-50 hover:text-red-600">
+            <LogOut size={20} strokeWidth={2} />
+            
+            {/* Tooltip */}
+            <div className="absolute left-full ml-3 px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+              Cerrar Sesión
+            </div>
+          </LogoutButton>
         </div>
       </div>
     </aside>

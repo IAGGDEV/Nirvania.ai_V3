@@ -5,13 +5,14 @@ import { ChatBar } from './ChatBar'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
+  user?: any
 }
 
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar user={user} />
       
       {/* Main content */}
       <div className="pl-[72px] pb-24">

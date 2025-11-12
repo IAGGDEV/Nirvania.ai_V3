@@ -1,8 +1,9 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 import { config } from '@/lib/config'
+import { Database } from '@/lib/types/database'
 
 export function createClient() {
-  return createSupabaseClient(
+  return createBrowserClient<Database>(
     config.supabase.url,
     config.supabase.anonKey
   )
