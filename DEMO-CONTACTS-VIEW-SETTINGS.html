@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts con View Settings - Nirvania.ai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        .view-settings-panel {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .view-settings-panel.open {
+            transform: translateX(0);
+        }
+        
+        .overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .column-item.hidden-col {
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20">
+
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-40 h-screen w-[72px] bg-white border-r border-gray-100">
+        <div class="flex h-full flex-col">
+            <div class="flex h-[72px] items-center justify-center border-b border-gray-100">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+            </div>
+            <nav class="flex-1 px-3 py-6 flex flex-col gap-2">
+                <button class="relative flex items-center justify-center h-12 w-12 rounded-lg transition-all group bg-blue-50 text-blue-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-600 rounded-r-full"></div>
+                </button>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="pl-[72px] min-h-screen">
+        <div class="p-8">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Header -->
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Contacts</h1>
+                        <p class="text-gray-600 mt-1">Gestiona todos tus contactos con vistas personalizadas</p>
+                    </div>
+                    <button class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        New Contact
+                    </button>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="bg-white rounded-lg border border-gray-200 mb-4">
+                    <div class="px-6 py-4 flex items-center gap-4">
+                        <!-- View Selector -->
+                        <div class="flex items-center gap-2">
+                            <button class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                                <span>All Contacts</span>
+                                <span class="text-gray-400">0</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <button class="p-1.5 hover:bg-gray-100 rounded">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="flex-1"></div>
+
+                        <!-- Actions -->
+                        <button class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            Search
+                        </button>
+                        
+                        <button class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                            </svg>
+                            Filter
+                        </button>
+                        
+                        <button class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                            </svg>
+                            Sort
+                        </button>
+                        
+                        <button onclick="toggleViewSettings()" class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg border-2 border-transparent hover:border-blue-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            View Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="px-6 py-3 text-left">
+                                    <input type="checkbox" class="rounded border-gray-300">
+                                </th>
+                                <th id="col-contact" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                                <th id="col-industry" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Industry</th>
+                                <th id="col-location" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th id="col-company" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                                <th id="col-deals" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deals (Primary Contact)</th>
+                                <th id="col-created" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" class="px-6 py-16 text-center text-gray-500">
+                                    <div class="flex flex-col items-center gap-4">
+                                        <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900 mb-1">No contacts found</div>
+                                            <div class="text-sm text-gray-500">Click "View Settings" to customize columns and filters →</div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay fixed inset-0 bg-black/30 z-40" onclick="toggleViewSettings()"></div>
+
+    <!-- View Settings Panel -->
+    <div id="view-settings-panel" class="view-settings-panel fixed inset-y-0 right-0 z-50 w-[400px] bg-white border-l border-gray-200 shadow-2xl overflow-y-auto">
+        
+        <!-- Header -->
+        <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+            <h2 class="text-lg font-semibold text-gray-900">View Settings</h2>
+            <button onclick="toggleViewSettings()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-8">
+            
+            <!-- Name -->
+            <div>
+                <label class="block text-sm font-medium text-gray-900 mb-2">Name</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">⭐</span>
+                    <input 
+                        type="text" 
+                        value="All Contacts" 
+                        class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+            </div>
+
+            <!-- Type -->
+            <div>
+                <label class="block text-sm font-medium text-gray-900 mb-3">Type</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="setViewType('table')" id="type-table" class="flex flex-col items-center gap-2 p-4 border-2 border-blue-600 bg-blue-50 rounded-lg transition-all">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-sm font-medium text-blue-900">Table View</span>
+                    </button>
+                    <button onclick="setViewType('kanban')" id="type-kanban" class="flex flex-col items-center gap-2 p-4 border-2 border-gray-200 hover:border-gray-300 rounded-lg transition-all">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 0v10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">Kanban Board</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sort By -->
+            <div>
+                <label class="block text-sm font-medium text-gray-900 mb-3">Sort By:</label>
+                <div class="space-y-2">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <select class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                            <option>Created At</option>
+                            <option>Updated At</option>
+                            <option>Name</option>
+                            <option>Email</option>
+                            <option>Last Contacted</option>
+                        </select>
+                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="setSortOrder('asc')" id="sort-asc" class="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                            </svg>
+                            Ascending
+                        </button>
+                        <button onclick="setSortOrder('desc')" id="sort-desc" class="flex-1 flex items-center justify-center gap-2 px-3 py-2 border-2 border-blue-600 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                            Descending
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Columns -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <label class="text-sm font-medium text-gray-900">Table Columns</label>
+                    <button onclick="showAllColumns()" class="text-xs text-blue-600 hover:text-blue-700 font-medium">Reset</button>
+                </div>
+
+                <div class="space-y-1 max-h-96 overflow-y-auto">
+                    <!-- Basic Columns -->
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4 mb-2">📋 BASIC</div>
+                    
+                    <div onclick="toggleColumn('name')" data-column="name" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">👤</span>
+                            <span class="text-sm font-medium text-gray-900">Name</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <div onclick="toggleColumn('email')" data-column="email" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">📧</span>
+                            <span class="text-sm font-medium text-gray-900">Email</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <div onclick="toggleColumn('phone')" data-column="phone" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">📱</span>
+                            <span class="text-sm font-medium text-gray-900">Phone</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <div onclick="toggleColumn('linkedin')" data-column="linkedin" class="column-item hidden-col flex items-center justify-between px-3 py-2.5 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🔗</span>
+                            <span class="text-sm font-medium text-gray-600">LinkedIn</span>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                        </svg>
+                    </div>
+
+                    <!-- Professional -->
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4 mb-2">💼 PROFESSIONAL</div>
+                    
+                    <div onclick="toggleColumn('role')" data-column="role" class="column-item hidden-col flex items-center justify-between px-3 py-2.5 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">💼</span>
+                            <span class="text-sm font-medium text-gray-600">Role</span>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                        </svg>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4 mb-2">📍 LOCATION</div>
+                    
+                    <div onclick="toggleColumn('location')" data-column="location" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">📍</span>
+                            <span class="text-sm font-medium text-gray-900">Location</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4 mb-2">🏢 COMPANY</div>
+                    
+                    <div onclick="toggleColumn('company')" data-column="company" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🏢</span>
+                            <span class="text-sm font-medium text-gray-900">Company</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <div onclick="toggleColumn('industry')" data-column="industry" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🏭</span>
+                            <span class="text-sm font-medium text-gray-900">Industry</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <!-- System -->
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4 mb-2">⚙️ SYSTEM</div>
+                    
+                    <div onclick="toggleColumn('deals')" data-column="deals" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">💰</span>
+                            <span class="text-sm font-medium text-gray-900">Deals (Primary Contact)</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <div class="text-xs text-gray-400 mt-2 px-3">
+                        <span class="font-medium">5 Fields</span> →
+                    </div>
+
+                    <div onclick="toggleColumn('created')" data-column="created" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">📅</span>
+                            <span class="text-sm font-medium text-gray-900">Created</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+
+                    <div onclick="toggleColumn('updated')" data-column="updated" class="column-item flex items-center justify-between px-3 py-2.5 bg-blue-50 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🔄</span>
+                            <span class="text-sm font-medium text-gray-900">Updated</span>
+                        </div>
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share View -->
+            <div class="pt-6 border-t border-gray-200">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <label class="text-sm font-medium text-gray-900 block mb-1">
+                            Share view with organization
+                        </label>
+                        <p class="text-xs text-gray-500">
+                            Allow others in your organization to see and edit this view
+                        </p>
+                    </div>
+                    <div class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 cursor-pointer" onclick="this.classList.toggle('bg-blue-600'); this.querySelector('span').classList.toggle('translate-x-5')">
+                        <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition translate-x-0"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4">
+            <div class="flex gap-3">
+                <button onclick="toggleViewSettings()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium">
+                    Cancel
+                </button>
+                <button onclick="saveView()" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let visibleColumns = new Set(['name', 'email', 'phone', 'location', 'company', 'industry', 'deals', 'created', 'updated']);
+
+        function toggleViewSettings() {
+            const panel = document.getElementById('view-settings-panel');
+            const overlay = document.getElementById('overlay');
+            panel.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function toggleColumn(columnId) {
+            const item = document.querySelector(`[data-column="${columnId}"]`);
+            
+            if (visibleColumns.has(columnId)) {
+                visibleColumns.delete(columnId);
+                item.classList.add('hidden-col');
+                item.classList.remove('bg-blue-50', 'hover:bg-blue-100');
+                item.classList.add('hover:bg-gray-50');
+                
+                // Change eye icon
+                const svg = item.querySelector('svg');
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>';
+                svg.classList.remove('text-blue-600');
+                svg.classList.add('text-gray-400');
+                item.querySelector('span.text-sm').classList.remove('text-gray-900');
+                item.querySelector('span.text-sm').classList.add('text-gray-600');
+            } else {
+                visibleColumns.add(columnId);
+                item.classList.remove('hidden-col');
+                item.classList.add('bg-blue-50', 'hover:bg-blue-100');
+                item.classList.remove('hover:bg-gray-50');
+                
+                // Change eye icon
+                const svg = item.querySelector('svg');
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
+                svg.classList.add('text-blue-600');
+                svg.classList.remove('text-gray-400');
+                item.querySelector('span.text-sm').classList.add('text-gray-900');
+                item.querySelector('span.text-sm').classList.remove('text-gray-600');
+            }
+        }
+
+        function setViewType(type) {
+            document.getElementById('type-table').classList.remove('border-blue-600', 'bg-blue-50');
+            document.getElementById('type-table').classList.add('border-gray-200');
+            document.getElementById('type-kanban').classList.remove('border-blue-600', 'bg-blue-50');
+            document.getElementById('type-kanban').classList.add('border-gray-200');
+            
+            document.getElementById(`type-${type}`).classList.add('border-blue-600', 'bg-blue-50');
+            document.getElementById(`type-${type}`).classList.remove('border-gray-200');
+        }
+
+        function setSortOrder(order) {
+            document.getElementById('sort-asc').classList.remove('border-2', 'border-blue-600', 'bg-blue-50', 'text-blue-700');
+            document.getElementById('sort-asc').classList.add('border', 'border-gray-300', 'text-gray-700');
+            document.getElementById('sort-desc').classList.remove('border-2', 'border-blue-600', 'bg-blue-50', 'text-blue-700');
+            document.getElementById('sort-desc').classList.add('border', 'border-gray-300', 'text-gray-700');
+            
+            document.getElementById(`sort-${order}`).classList.add('border-2', 'border-blue-600', 'bg-blue-50', 'text-blue-700');
+            document.getElementById(`sort-${order}`).classList.remove('border', 'border-gray-300', 'text-gray-700');
+        }
+
+        function showAllColumns() {
+            document.querySelectorAll('.column-item').forEach(item => {
+                const columnId = item.getAttribute('data-column');
+                if (!visibleColumns.has(columnId)) {
+                    toggleColumn(columnId);
+                }
+            });
+        }
+
+        function saveView() {
+            alert(`✅ View saved!\n\nVisible columns: ${visibleColumns.size}\nSort by: Created At (Descending)\n\nEn la app real se guardará en Supabase.`);
+            toggleViewSettings();
+        }
+    </script>
+
+</body>
+</html>
+
